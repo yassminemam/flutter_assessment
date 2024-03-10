@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/login/login_bloc.dart';
 import 'package:flutter_assessment/injection_container.dart' as di;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'app_router.dart';
 import 'config/base_url_config.dart';
 import 'config/flavour_config.dart';
-import 'feature/presentation/page/login/login_page.dart';
+import 'core/util/tools.dart';
+import 'feature/presentation/bloc/register/register_bloc.dart';
+import 'injection_container.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,24 +21,36 @@ Future<void> main() async {
   await di.init();
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (_ , child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.green,
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<RegisterBloc>(
+            create: (context) => sl<RegisterBloc>(),
           ),
-          home: child,
-        );
-      },
-      child: const LoginPage(),
-    );
+          BlocProvider<LoginBloc>(
+            create: (context) => sl<LoginBloc>(),
+          )
+        ],
+        child: ScreenUtilInit(
+          designSize: const Size(375, 812),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme:
+                  const ColorScheme.light(primary: AppColors.appMainColor),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            routerConfig:
+                GoRouter(routes: allRouts, navigatorKey: Tools.navigatorKey),
+          ),
+        ));
   }
 }

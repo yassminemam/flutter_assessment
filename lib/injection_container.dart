@@ -4,11 +4,12 @@ import 'package:get_it/get_it.dart';
 import 'config/flavour_config.dart';
 import 'core/network/network_info.dart';
 import 'core/util/dio_logging_interceptor.dart';
-import 'feature/data/dependencies/dependencies_remote_data_source.dart';
-import 'feature/data/repository/dependencies/dependencies_repository_impl.dart';
-import 'feature/domain/repository/dependencies/dependencies_repository.dart';
+import 'feature/data/dependencies/register_remote_data_source.dart';
+import 'feature/data/repository/register/register_repository_impl.dart';
+import 'feature/domain/repository/dependencies/register_repository.dart';
 import 'feature/domain/usecase/get_dependencies/get_dependencies.dart';
-import 'feature/presentation/bloc/dependencies/dependencies_bloc.dart';
+import 'feature/presentation/bloc/login/login_bloc.dart';
+import 'feature/presentation/bloc/register/register_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -18,21 +19,25 @@ Future<void> init() async {
    */
   // Bloc
   sl.registerFactory(
-    () => DependenciesBloc(
-      getDependenciesRepo: sl(),
+    () => RegisterBloc(
+      registerRepo: sl(),
     ),
+  );
+  sl.registerFactory(
+    () => LoginBloc(),
   );
 
   // Use Case
-  sl.registerLazySingleton(() => GetDependencies(getDependenciesRepo: sl()));
+  sl.registerLazySingleton(() => GetDependencies(registerRepo: sl()));
 
   // Repository
-  sl.registerLazySingleton<DependenciesRepository>(
-      () => DependenciesRepositoryImpl(dependenciesRemoteDataSource: sl(), networkInfo: sl()));
+  sl.registerLazySingleton<RegisterRepository>(() =>
+      RegisterRepositoryImpl(
+          registerRemoteDataSource: sl(), networkInfo: sl()));
 
   // Data Source
-  sl.registerLazySingleton<DependenciesRemoteDataSource>(
-      () => DependenciesRemoteDataSourceImpl(dio: sl()));
+  sl.registerLazySingleton<RegisterRemoteDataSource>(
+      () => RegisterRemoteDataSourceImpl(dio: sl()));
 
   /**
    * ! Core

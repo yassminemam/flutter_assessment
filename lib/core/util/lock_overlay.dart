@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
 bool haveOverlay = false;
 
 class LockOverlay {
@@ -52,7 +53,7 @@ class LockOverlay {
           children: [
             Container(
               color: Colors.white,
-              child: const Icon(Icons.downloading),
+              child: const Icon(Icons.downloading, color: AppColors.appMainColor,),
             ),
           ],
         );

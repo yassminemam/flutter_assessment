@@ -23,7 +23,7 @@ class DependenciesResponseModel {
 }
 
 class Data {
-  List<Type>? types;
+  List<UserType>? types;
   List<Tag>? tags;
   List<SocialMedia>? socialMedia;
 
@@ -31,9 +31,9 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['types'] != null) {
-      types = <Type>[];
+      types = <UserType>[];
       json['types'].forEach((v) {
-        types!.add(new Type.fromJson(v));
+        types!.add(new UserType.fromJson(v));
       });
     }
     if (json['tags'] != null) {
@@ -65,13 +65,13 @@ class Data {
   }
 }
 
-class Type {
+class UserType {
   int? value;
   String? label;
 
-  Type({this.value, this.label});
+  UserType({this.value, this.label});
 
-  Type.fromJson(Map<String, dynamic> json) {
+  UserType.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     label = json['label'];
   }
