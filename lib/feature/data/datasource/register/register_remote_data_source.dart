@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as dioLib;
-import '../../../config/end_poits.dart';
-import '../model/dependencies/dependencies_response_model.dart';
-import '../model/register/register_request_model.dart';
+import 'package:flutter_assessment/core/error/app_server_error.dart';
+import '../../../../config/end_poits.dart';
+import '../../../../core/error/exception.dart';
+import '../../model/dependencies/dependencies_response_model.dart';
+import '../../model/register/register_request_model.dart';
 
 abstract class RegisterRemoteDataSource {
   Future<DependenciesResponseModel?> getDependencies();
@@ -28,9 +30,10 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
             DependenciesResponseModel.fromJson(response.data);
         return dependenciesResponseModel;
       }
-      return null;
     } on DioException catch (ex) {
-      throw Exception(ex.message);
+      AppServerError? error =
+          AppServerError.fromJson(ex.response?.data ?? ex.message);
+      throw AppException(error?.toString() ?? "Unknown Server Error");
     }
   }
 
@@ -38,20 +41,22 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   Future<dynamic> sendRegisterRequest(
       {required RegisterRequestModel body}) async {
     try {
-      Map<String, dynamic> header = {};
-      header['Content-Type'] = "multipart/form-data";
-      header['Accept'] = "application/json";
-      header['Accept-Language'] = "ar";
-      dio.options.headers = header;
+      Map<String, dynamic> headers = {};
+      headers['Content-Type'] = "multipart/form-data";
+      headers['Accept'] = "application/json";
+      headers['Accept-Language'] = "ar";
+      dio.options.headers = headers;
+
       dioLib.FormData formDataBody =
           dioLib.FormData.fromMap(body.toJson(), ListFormat.multiCompatible);
       var response = await dio.post(EndPoints.sendRegister, data: formDataBody);
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return response;
       }
-      return null;
     } on DioException catch (ex) {
-      throw Exception(ex.message);
+      AppServerError? error =
+      AppServerError.fromJson(ex.response?.data ?? ex.message);
+      throw AppException(error?.toString() ?? "Unknown Server Error");
     }
   }
 }

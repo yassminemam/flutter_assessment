@@ -2,9 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_assessment/core/error/failure.dart';
 import 'package:flutter_assessment/feature/data/model/dependencies/dependencies_response_model.dart';
+import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
-import '../../../domain/repository/dependencies/register_repository.dart';
-import '../../dependencies/register_remote_data_source.dart';
+import '../../../domain/repository/register/register_repository.dart';
+import '../../datasource/register/register_remote_data_source.dart';
 import '../../model/register/register_request_model.dart';
 
 class RegisterRepositoryImpl implements RegisterRepository {
@@ -23,8 +24,8 @@ class RegisterRepositoryImpl implements RegisterRepository {
       try {
         var response = await registerRemoteDataSource.getDependencies();
         return Right(response);
-      } on DioException catch (exp) {
-        return Left(ServerFailure(exp.message??"Unknown Error"));
+      } on AppException catch (exp) {
+        return Left(ServerFailure(exp.errorMessage));
       }
     } else {
       return Left(ConnectionFailure());
@@ -38,8 +39,8 @@ class RegisterRepositoryImpl implements RegisterRepository {
       try {
         var response = await registerRemoteDataSource.sendRegisterRequest(body: body);
         return Right(response);
-      } on DioException catch (exp) {
-        return Left(ServerFailure(exp.message??"Unknown Error"));
+      } on AppException catch (exp) {
+        return Left(ServerFailure(exp.errorMessage));
       }
     } else {
       return Left(ConnectionFailure());

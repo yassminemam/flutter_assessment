@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
 import 'package:flutter_assessment/core/theme/text_styles.dart';
+import 'package:flutter_assessment/feature/data/model/login/login_request_model.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/login/login_bloc.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/login/login_event.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/settings/settings_bloc.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/settings/settings_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,6 +14,7 @@ import '../../../../app_router.dart';
 import '../../../../core/constants/strings/app_strings.dart';
 import '../../../../core/util/lock_overlay.dart';
 import '../../../../core/util/tools.dart';
+import '../../../data/model/settings/settings_model.dart';
 import '../../bloc/login/login_state.dart';
 import '../../widget/button_primary_widget.dart';
 import '../../widget/input_widget.dart';
@@ -23,50 +28,46 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController emailCon = TextEditingController();
-  TextEditingController passwordCon = TextEditingController();
-  String email = "";
-  String password = "";
-  late LoginBloc loginBloc;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final TextEditingController _emailCon = TextEditingController();
+  final TextEditingController _passwordCon = TextEditingController();
+  late LoginBloc _loginBloc;
 
   @override
   void initState() {
-    loginBloc = BlocProvider.of<LoginBloc>(context);
+    _loginBloc = BlocProvider.of<LoginBloc>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
-      body: BlocProvider<LoginBloc>(
-          create: (context) => loginBloc,
-          child: BlocListener<LoginBloc, LoginState>(
-            listener: (BuildContext context, LoginState state) {
-              if (state.status == LoginStates.loading) {
-                LockOverlay().showLoadingOverlay(scaffoldKey.currentContext);
-              } else if (state.status == LoginStates.failure) {
-                LockOverlay().closeOverlay();
-                Tools.showErrorMessage(AppStrings.errorNoInternetConnection);
-              } else if (state.status == LoginStates.loaded) {
-                LockOverlay().closeOverlay();
-              }
-            },
-            child: BlocBuilder<LoginBloc, LoginState>(
-              builder: (context, state) {
-                if (state.status == LoginStates.initial) {
-                  return SafeArea(child: _getScreenBody());
-                }
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.appMainColor,
-                  ),
-                );
-              },
-            ),
-          )),
+      body: BlocListener<LoginBloc, LoginState>(
+        listener: (BuildContext context, LoginState state) {
+          if (state.status == LoginStates.loading) {
+            LockOverlay().showLoadingOverlay(_scaffoldKey.currentContext);
+          } else if (state.status == LoginStates.failure) {
+            LockOverlay().closeOverlay();
+            Tools.showErrorMessage(state.error?.errorMessage);
+          } else if (state.status == LoginStates.loaded) {
+            SettingsBloc settingsBloc =
+            BlocProvider.of<SettingsBloc>(context);
+            settingsBloc.add(UpdateSettingsEvent(
+                settingsModel: SettingsModel(
+                    authToken: state.loginResponse?.accessToken ?? "",
+                    isLogin: true)));
+            LockOverlay().closeOverlay();
+            context.go('/$homeRoute');
+          }
+        },
+        child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            return SafeArea(child: _getScreenBody());
+          },
+        ),
+      )
     );
   }
 
@@ -128,22 +129,15 @@ class _LoginPageState extends State<LoginPage> {
         ),
         InputWidget(
           title: AppStrings.emailAddress,
-          controller: emailCon,
+          controller: _emailCon,
           validator: ValidationType.EMAIL,
           maxLines: 1,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 20.w),
-          onDone: (email) {
-            this.email = email;
-          },
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
         ),
         InputWidget(
           title: AppStrings.password,
-          controller: passwordCon,
+          controller: _passwordCon,
           maxLines: 1,
-          onDone: (password) {
-            this.password = password;
-          },
           obscureText: true,
           validator: ValidationType.TEXT,
           suffixIcon: SvgPicture.asset('assets/icon/password_ic.svg',
@@ -176,7 +170,17 @@ class _LoginPageState extends State<LoginPage> {
   Widget _getLoginBtn() {
     return ButtonPrimaryWidget(
       AppStrings.login,
-      onTap: () {},
+      onTap: () {
+        if (_emailCon.text.isEmpty || _passwordCon.text.isEmpty) {
+          Tools.showErrorMessage(AppStrings.errorFillAllFieldsError);
+        } else if (_passwordCon.text.length < 8) {
+          Tools.showErrorMessage(AppStrings.errorPasswordLength);
+        } else {
+          _loginBloc.add(LoginUserEvent(
+              body: LoginRequestModel(
+                  email: _emailCon.text, password: _passwordCon.text)));
+        }
+      },
     );
   }
 

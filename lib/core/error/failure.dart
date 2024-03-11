@@ -1,45 +1,52 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_assessment/core/constants/strings/app_strings.dart';
 
-abstract class Failure extends Equatable {}
+abstract class Failure extends Equatable {
+  final String _errorMessage;
 
-const String messageConnectionFailure = 'messageConnectionFailure';
+  String get errorMessage => _errorMessage;
+
+  Failure(this._errorMessage);
+}
+
+const String messageConnectionFailure = AppStrings.errorNoInternetConnection;
+const String messageCacheFailure = AppStrings.errorCanNotAccessCache;
 
 class ServerFailure extends Failure {
-  final String errorMessage;
+  final String error;
 
-  ServerFailure(this.errorMessage);
+  ServerFailure(this.error) : super(error);
 
   @override
-  List<Object> get props => [errorMessage];
+  List<Object> get props => [error];
 
   @override
   String toString() {
-    return 'ServerFailure{errorMessage: $errorMessage}';
+    return 'ServerFailure{errorMessage: $error}';
   }
 }
 
 class CacheFailure extends Failure {
-  final String errorMessage;
 
-  CacheFailure(this.errorMessage);
+  CacheFailure() : super(messageCacheFailure);
 
   @override
-  List<Object> get props => [errorMessage];
+  List<Object> get props => [];
 
   @override
   String toString() {
-    return 'CacheFailure{errorMessage: $errorMessage}';
+    return 'CacheFailure{errorMessage: $messageCacheFailure}';
   }
 }
 
 class ConnectionFailure extends Failure {
-  final String errorMessage = messageConnectionFailure;
+  ConnectionFailure() : super(messageConnectionFailure);
 
   @override
-  List<Object> get props => [errorMessage];
+  List<Object> get props => [];
 
   @override
   String toString() {
-    return 'ConnectionFailure{errorMessage: $errorMessage}';
+    return 'ConnectionFailure{errorMessage: $messageConnectionFailure}';
   }
 }

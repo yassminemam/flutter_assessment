@@ -25,6 +25,16 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final int _allStepsCount = 2;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  late final RegisterBloc _registerBloc;
+
+  @override
+  void initState() {
+    _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    if (_registerBloc.state.dependencies == null) {
+      _registerBloc.add(const GetDependenciesEvent());
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
               LockOverlay().showLoadingOverlay(scaffoldKey.currentContext);
             } else if (state.status == RegisterStates.failure) {
               LockOverlay().closeOverlay();
-              Tools.showErrorMessage(AppStrings.errorNoInternetConnection);
+              Tools.showErrorMessage(state.error?.errorMessage);
             } else if (state.status == RegisterStates.loaded) {
               LockOverlay().closeOverlay();
             } else if (state.status == RegisterStates.registerSuccess) {
@@ -54,8 +64,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   Visibility(
                       visible: !(state.isValid ?? true),
                       child: _getErrorPanel(state.formErrorMsg ?? "")),
-                  _getStepper(state.currentPageIndex!),
-                  Expanded(child: _getScreenBody(state.currentPageIndex!)),
+                  _getStepper(state.currentPageIndex ?? 1),
+                  Expanded(child: _getScreenBody(state.currentPageIndex ?? 1)),
                 ],
               ));
             },
@@ -64,34 +74,35 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _getHeader() {
-    final registerBloc = BlocProvider.of<RegisterBloc>(context);
+    int pageIndex = _registerBloc.state.currentPageIndex ?? 1;
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.only(top: 60.h, left: 20.w),
-          child: Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  if ((registerBloc.state.currentPageIndex! - 1) >= 1) {
-                    registerBloc.add(UpdatePageEvent(
-                        newIndex: registerBloc.state.currentPageIndex! - 1));
-                  }
-                },
-                child: SvgPicture.asset(
+          child: InkWell(
+            onTap: () {
+              if ((pageIndex - 1) >= 1) {
+                _registerBloc.add(UpdatePageEvent(newIndex: pageIndex - 1));
+              } else {
+                context.go('/');
+              }
+            },
+            child: Row(
+              children: [
+                SvgPicture.asset(
                   'assets/icon/back_ic.svg',
                   width: 8.w,
                   height: 15.w,
                 ),
-              ),
-              SizedBox(
-                width: 10.w,
-              ),
-              Text(
-                AppStrings.register,
-                style: AppTxtStyles.mainFontStyle,
-              )
-            ],
+                SizedBox(
+                  width: 10.w,
+                ),
+                Text(
+                  AppStrings.register,
+                  style: AppTxtStyles.mainFontStyle,
+                )
+              ],
+            ),
           ),
         ),
         SizedBox(
@@ -143,9 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
           goToNext: _goToNext,
         );
       case 2:
-        return RegisterSecondStepPage(
-          goToNext: _goToNext,
-        );
+        return const RegisterSecondStepPage();
     }
     return RegisterFirstStepPage(
       goToNext: _goToNext,
@@ -153,10 +162,9 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _goToNext() {
-    final registerBloc = BlocProvider.of<RegisterBloc>(context);
-    if ((registerBloc.state.currentPageIndex! + 1) <= _allStepsCount) {
-      registerBloc.add(
-          UpdatePageEvent(newIndex: registerBloc.state.currentPageIndex! + 1));
+    int pageIndex = _registerBloc.state.currentPageIndex ?? 1;
+    if ((pageIndex + 1) <= _allStepsCount) {
+      _registerBloc.add(UpdatePageEvent(newIndex: pageIndex + 1));
     }
   }
 }

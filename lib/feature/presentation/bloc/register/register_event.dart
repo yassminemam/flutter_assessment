@@ -25,10 +25,11 @@ class UpdateIsValidFormEvent extends RegisterEvent {
 
 class UpdatePageEvent extends RegisterEvent {
   final int newIndex;
-  const UpdatePageEvent({required this.newIndex});
+  final RegisterRequestModel? registerRequestModel;
+  const UpdatePageEvent({required this.newIndex, this.registerRequestModel});
 
   @override
-  List<Object> get props => [newIndex];
+  List<Object?> get props => [newIndex, registerRequestModel];
 }
 
 class UpdateRegisterRequestModelEvent extends RegisterEvent {

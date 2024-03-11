@@ -5,25 +5,13 @@ import '../../../data/model/register/register_request_model.dart';
 
 enum RegisterStates { initial, loading, loaded, failure, registerSuccess }
 
-extension RegisterStatesX on RegisterStates {
-  bool get isInitial => this == RegisterStates.initial;
-
-  bool get isLoaded => this == RegisterStates.loaded;
-
-  bool get isFailure => this == RegisterStates.failure;
-
-  bool get isLoading => this == RegisterStates.loading;
-
-  bool get isRegisterSuccess => this == RegisterStates.registerSuccess;
-}
-
 class RegisterState extends Equatable {
   const RegisterState(
       {this.status = RegisterStates.initial,
       this.dependencies,
       this.error,
       this.isValid = true,
-      this.currentPageIndex = 1,
+      this.currentPageIndex,
       this.registerRequestModel,
       this.formErrorMsg,
       this.registerResponse});

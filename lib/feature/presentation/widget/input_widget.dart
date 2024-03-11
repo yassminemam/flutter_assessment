@@ -10,7 +10,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 enum ValidationType { EMAIL, TEXT }
 
 class InputWidget extends StatelessWidget {
-  TextEditingController controller;
+  TextEditingController? controller;
   var inputType;
   var onChanged;
   var onDone;
@@ -31,9 +31,9 @@ class InputWidget extends StatelessWidget {
   var margin;
   bool? isReadOnly;
   double? height;
-
+  String? initialVal;
   InputWidget(
-      {required this.controller,
+      {this.controller,
       this.inputType = TextInputType.text,
       required this.title,
       this.bgColor,
@@ -53,7 +53,7 @@ class InputWidget extends StatelessWidget {
       this.prefixIcon,
       this.margin,
       this.isReadOnly,
-      this.obscureText = false});
+      this.obscureText = false, this.initialVal});
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +80,7 @@ class InputWidget extends StatelessWidget {
                 height: height ?? 56.h,
                 child: TextFormField(
                   controller: controller,
+                  initialValue: initialVal,
                   keyboardType: inputType,
                   textAlign: TextAlign.start,
                   inputFormatters: inputFormatters ??
@@ -97,7 +98,7 @@ class InputWidget extends StatelessWidget {
                     fillColor: Colors.transparent,
                     border: InputBorder.none,
                     contentPadding: contentPadding ??
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     hintText: hint ?? "",
                     hintStyle: const TextStyle(
                         overflow: TextOverflow.ellipsis,

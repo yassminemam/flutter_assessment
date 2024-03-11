@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/login/login_bloc.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/settings/settings_bloc.dart';
 import 'package:flutter_assessment/injection_container.dart' as di;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import 'app_router.dart';
 import 'config/base_url_config.dart';
 import 'config/flavour_config.dart';
 import 'core/util/tools.dart';
+import 'feature/presentation/bloc/home/home_bloc.dart';
 import 'feature/presentation/bloc/register/register_bloc.dart';
 import 'injection_container.dart';
 
@@ -34,7 +36,11 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<LoginBloc>(
             create: (context) => sl<LoginBloc>(),
-          )
+          ),
+          BlocProvider<SettingsBloc>(
+            create: (context) => sl<SettingsBloc>(),
+          ),
+          BlocProvider<HomeBloc>(create: (context) => sl<HomeBloc>()),
         ],
         child: ScreenUtilInit(
           designSize: const Size(375, 812),

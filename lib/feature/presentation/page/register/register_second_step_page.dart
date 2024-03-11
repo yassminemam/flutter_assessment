@@ -23,9 +23,7 @@ import '../../widget/sub_txt_widget.dart';
 import 'package:dio/dio.dart' as dio;
 
 class RegisterSecondStepPage extends StatefulWidget {
-  Function() goToNext;
-
-  RegisterSecondStepPage({super.key, required this.goToNext});
+  const RegisterSecondStepPage({super.key});
 
   @override
   State<RegisterSecondStepPage> createState() => _RegisterSecondStepPageState();
@@ -41,12 +39,13 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
   int _salary = 100;
   late List<Tag> _skillsList;
   final List<String> _skillsLabels = [];
-  final List<num?> _selectedTagsIds = [];
+  final List<String> _selectedSkills = [];
+  final List<num> _selectedSkillsIds = [];
   late List<SocialMedia> _socialMediaList;
   final List _socialMediaValues = [];
   final List _selectedSocialMedia = [];
-  String? _avatarFilePath;
-  String? _avatarFileName;
+  String _avatarFilePath = "";
+  String _avatarFileName = "";
 
   @override
   void initState() {
@@ -63,6 +62,47 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
         "value": false,
         "icon": "assets/icon/${s.value}_ic.svg"
       });
+    }
+    if (_registerBloc.state.registerRequestModel != null) {
+      if (_registerBloc.state.registerRequestModel!.avatarFilePath != null &&
+          _registerBloc.state.registerRequestModel!.avatarFileName != null) {
+        _avatarFilePath =
+            _registerBloc.state.registerRequestModel!.avatarFilePath!;
+        _avatarFileName =
+            _registerBloc.state.registerRequestModel!.avatarFileName!;
+      }
+      _aboutCon.text = _registerBloc.state.registerRequestModel!.about ?? "";
+      _birthDateCon.text =
+          _registerBloc.state.registerRequestModel!.birthDate ?? "";
+      if (_registerBloc.state.registerRequestModel!.salary != null) {
+        _salary = _registerBloc.state.registerRequestModel!.salary!.toInt();
+      }
+      if (_registerBloc.state.registerRequestModel!.gender != null) {
+        _userGender = _registerBloc.state.registerRequestModel!.gender;
+      }
+      if (_registerBloc.state.dependencies != null &&
+          _registerBloc.state.registerRequestModel!.tags != null) {
+        for (num tag in _registerBloc.state.registerRequestModel!.tags!) {
+          _selectedSkills.add(_skillsList
+                  .firstWhere((element) => (element.value == tag.toInt()))
+                  .label ??
+              "");
+        }
+      }
+      if (_registerBloc.state.registerRequestModel!.gender != null) {
+        _userGender = _registerBloc.state.registerRequestModel!.gender;
+      }
+      if (_registerBloc.state.registerRequestModel!.favSocialMedia != null) {
+        for (String socialItem
+            in _registerBloc.state.registerRequestModel!.favSocialMedia!) {
+          for (var s in _socialMediaValues) {
+            if (s["label"].toString().toLowerCase() == socialItem) {
+              int index = _socialMediaValues.indexOf(s);
+              _socialMediaValues[index]["value"] = true;
+            }
+          }
+        }
+      }
     }
     super.initState();
   }
@@ -110,10 +150,10 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
                             color: AppColors.appMainColor, width: 1)),
                     child: CircleAvatar(
                       radius: 41.5.r,
-                      backgroundImage: _avatarFilePath == null
+                      backgroundImage: _avatarFilePath.isEmpty
                           ? Image.asset("assets/icon/avatar_placeholder_ic.jpg")
                               .image
-                          : FileImage(File(_avatarFilePath!)),
+                          : FileImage(File(_avatarFilePath)),
                     ),
                   )),
               Positioned(
@@ -344,7 +384,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
                 });
               },
               onSelected: (Tag selectedTag) {
-                _selectedTagsIds.add(selectedTag.value);
+                _selectedSkillsIds.add(selectedTag.value ?? -1);
                 _textFieldTagsController.onSubmitted(selectedTag.label ?? "");
               },
               fieldViewBuilder: (context, textEditingController, focusNode,
@@ -353,7 +393,8 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
                   textEditingController: textEditingController,
                   focusNode: focusNode,
                   textfieldTagsController: _textFieldTagsController,
-                  textSeparators: const [','],
+                  textSeparators: const [","],
+                  initialTags: _selectedSkills,
                   letterCase: LetterCase.normal,
                   validator: (String tag) {
                     if (!_skillsLabels.contains(tag)) {
@@ -441,40 +482,48 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
   Widget _getSocialMedia() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
-      child: Column(
-        children: List.generate(
-          _socialMediaValues.length,
-          (index) => CheckboxListTile(
-            controlAffinity: ListTileControlAffinity.leading,
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            title: Row(
-              children: [
-                SvgPicture.asset(_socialMediaValues[index]["icon"],
-                    width: 20.w, height: 20.h),
-                SizedBox(
-                  width: 3.w,
-                ),
-                Text(
-                  _socialMediaValues[index]["label"],
-                  style: AppTxtStyles.btnTxtStyle.copyWith(color: Colors.black),
-                )
-              ],
-            ),
-            value: _socialMediaValues[index]["value"],
-            onChanged: (value) {
-              setState(() {
-                _socialMediaValues[index]["value"] = value;
-                if (_selectedSocialMedia.contains(_socialMediaValues[index])) {
-                  _selectedSocialMedia.remove(_socialMediaValues[index]);
-                } else {
-                  _selectedSocialMedia.add(_socialMediaValues[index]);
-                }
-              });
-            },
-          ),
+      child: Column(children: [
+        SubTxtWidget(AppStrings.skills),
+        SizedBox(
+          height: 10.h,
         ),
-      ),
+        Column(
+          children: List.generate(
+            _socialMediaValues.length,
+            (index) => CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              title: Row(
+                children: [
+                  SvgPicture.asset(_socialMediaValues[index]["icon"],
+                      width: 20.w, height: 20.h),
+                  SizedBox(
+                    width: 3.w,
+                  ),
+                  Text(
+                    _socialMediaValues[index]["label"],
+                    style:
+                        AppTxtStyles.btnTxtStyle.copyWith(color: Colors.black),
+                  )
+                ],
+              ),
+              value: _socialMediaValues[index]["value"],
+              onChanged: (value) {
+                setState(() {
+                  _socialMediaValues[index]["value"] = value;
+                  if (_selectedSocialMedia
+                      .contains(_socialMediaValues[index])) {
+                    _selectedSocialMedia.remove(_socialMediaValues[index]);
+                  } else {
+                    _selectedSocialMedia.add(_socialMediaValues[index]);
+                  }
+                });
+              },
+            ),
+          ),
+        )
+      ]),
     );
   }
 
@@ -482,47 +531,53 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
     return ButtonPrimaryWidget(
       AppStrings.submit,
       onTap: () {
-        if (_aboutCon.text.isEmpty ||
-            _birthDateCon.text.isEmpty ||
-            _selectedTagsIds.isEmpty ||
-            _selectedSocialMedia.isEmpty) {
-          _registerBloc.add(const UpdateIsValidFormEvent(
-              isValid: false,
-              formErrorMsg: AppStrings.errorFillAllFieldsError));
-        } else {
-          if (_aboutCon.text.length < 10) {
-            _registerBloc.add(const UpdateIsValidFormEvent(
-                isValid: false, formErrorMsg: AppStrings.errorAboutLength));
-          } else {
-            _registerBloc.add(const UpdateIsValidFormEvent(isValid: true));
-            RegisterRequestModel firstStepInfo =
-                _registerBloc.state.registerRequestModel!;
-            List<String> socialMedia = [];
-            for (dynamic s in _selectedSocialMedia) {
-              socialMedia.add(s["label"].toString().toLowerCase());
-            }
-            _registerBloc.add(UpdateRegisterRequestModelEvent(
-                registerRequestModel: RegisterRequestModel(
-                    firstName: firstStepInfo.firstName,
-                    lastName: firstStepInfo.lastName,
-                    email: firstStepInfo.email,
-                    password: firstStepInfo.password,
-                    passwordConf: firstStepInfo.passwordConf,
-                    type: firstStepInfo.type,
-                    about: _aboutCon.text,
-                    salary: _salary,
-                    birthDate: _birthDateCon.text,
-                    gender: _userGender,
-                    tags: _selectedTagsIds,
-                    favSocialMedia: socialMedia,
-                    avatar: _avatarFilePath != null
-                        ? dio.MultipartFile.fromFileSync(_avatarFilePath!,
-                            filename: _avatarFileName)
-                        : null)));
-            _registerBloc.add(const SendRegisterRequestEvent());
-          }
+        if (_validateInputs()) {
+          _registerBloc.add(const SendRegisterRequestEvent());
         }
       },
     );
+  }
+
+  bool _validateInputs() {
+    if (_aboutCon.text.isEmpty ||
+        _birthDateCon.text.isEmpty ||
+        _selectedSkillsIds.isEmpty ||
+        _selectedSocialMedia.isEmpty ||
+        _avatarFilePath.isEmpty) {
+      _registerBloc.add(const UpdateIsValidFormEvent(
+          isValid: false, formErrorMsg: AppStrings.errorFillAllFieldsError));
+      return false;
+    } else {
+      if (_aboutCon.text.length < 10) {
+        _registerBloc.add(const UpdateIsValidFormEvent(
+            isValid: false, formErrorMsg: AppStrings.errorAboutLength));
+        return false;
+      } else {
+        _registerBloc.add(const UpdateIsValidFormEvent(isValid: true));
+        RegisterRequestModel firstStepInfo =
+            _registerBloc.state.registerRequestModel!;
+        List<String> socialMedia = [];
+        for (dynamic s in _selectedSocialMedia) {
+          socialMedia.add(s["label"].toString().toLowerCase());
+        }
+        _registerBloc.add(UpdateRegisterRequestModelEvent(
+            registerRequestModel: RegisterRequestModel(
+                firstName: firstStepInfo.firstName,
+                lastName: firstStepInfo.lastName,
+                email: firstStepInfo.email,
+                password: firstStepInfo.password,
+                passwordConf: firstStepInfo.passwordConf,
+                type: firstStepInfo.type,
+                about: _aboutCon.text,
+                salary: _salary,
+                birthDate: _birthDateCon.text,
+                gender: _userGender,
+                tags: _selectedSkillsIds,
+                favSocialMedia: socialMedia,
+                avatar: dio.MultipartFile.fromFileSync(_avatarFilePath,
+                    filename: _avatarFileName))));
+        return true;
+      }
+    }
   }
 }

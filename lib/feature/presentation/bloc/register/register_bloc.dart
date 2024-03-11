@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import '../../../domain/repository/dependencies/register_repository.dart';
+import '../../../domain/repository/register/register_repository.dart';
 import 'register_event.dart';
 import 'register_state.dart';
 
@@ -113,7 +113,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       }, (r) {
         emit(
           state.copyWith(
-              status: RegisterStates.registerSuccess, registerResponse: r),
+              status: RegisterStates.registerSuccess,
+              registerResponse: r,
+              dependencies: state.dependencies),
+        );
+        emit(
+          state.copyWith(
+              status: RegisterStates.initial, dependencies: state.dependencies),
         );
       });
     });

@@ -1,34 +1,34 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_assessment/feature/data/model/login/login_request_model.dart';
+import 'package:flutter_assessment/feature/data/model/login/login_response_model.dart';
 import '../../../../core/error/failure.dart';
-import '../../../data/model/dependencies/dependencies_response_model.dart';
 
 enum LoginStates { initial, loading, loaded, failure }
-extension LoginStatesX on LoginStates {
-  bool get isInitial => this == LoginStates.initial;
-  bool get isLoaded => this == LoginStates.loaded;
-  bool get isFailure => this == LoginStates.failure;
-  bool get isLoading => this == LoginStates.loading;
-}
+
 class LoginState extends Equatable {
   const LoginState({
     this.status = LoginStates.initial,
-    this.dependencies, this.error,
+    this.error,
+    this.body,
+    this.loginResponse
   });
-
-  final DependenciesResponseModel? dependencies;
   final LoginStates status;
   final Failure? error;
+  final LoginRequestModel? body;
+  final LoginResponseModel? loginResponse;
   @override
-  List<Object?> get props => [status, dependencies];
+  List<Object?> get props => [status, error, loginResponse];
 
   LoginState copyWith({
-    DependenciesResponseModel? dependencies,
     required LoginStates status,
-    Failure? error
+    Failure? error,
+    LoginRequestModel? body,
+    LoginResponseModel? loginResponse
   }) {
     return LoginState(
-        dependencies: dependencies,
         status: status,
+        body: body,
+        loginResponse: loginResponse,
         error: error ?? ConnectionFailure()
     );
   }

@@ -1,5 +1,6 @@
 class AppStrings {
   static const String errorNoInternetConnection = "Error: no internet connection";
+  static const String errorCanNotAccessCache = "Error: can not access cashe";
   static const String accountLogin = "Account Login";
   static const emailAddress = "Email Address";
   static const password = "Password";
@@ -30,4 +31,7 @@ class AppStrings {
   static const errorPasswordLength = "Please enter a valid password at least 8 characters.";
   static const errorPasswordNotMatching = "Please enter a matching password.";
   static const errorAboutLength = "Please enter a valid bio at least 10 characters.";
+  static const yes = "Yes";
+  static const no = "No";
+  static const profileHeader = "Who am I";
 }

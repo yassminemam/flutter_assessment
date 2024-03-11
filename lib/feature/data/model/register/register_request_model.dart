@@ -2,7 +2,7 @@ class RegisterRequestModel {
   String? firstName;
   String? lastName;
   String? about;
-  List<num?>? tags;
+  List<num>? tags;
   List<String>? favSocialMedia;
   num? salary;
   String? password;
@@ -12,6 +12,8 @@ class RegisterRequestModel {
   int? gender;
   int? type;
   dynamic avatar;
+  String? avatarFilePath;
+  String? avatarFileName;
 
   RegisterRequestModel(
       {this.firstName,
@@ -26,7 +28,9 @@ class RegisterRequestModel {
       this.birthDate,
       this.gender,
       this.type,
-      this.avatar});
+      this.avatar,
+      this.avatarFilePath,
+      this.avatarFileName});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
