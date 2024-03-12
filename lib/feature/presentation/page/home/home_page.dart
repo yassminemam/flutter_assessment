@@ -17,6 +17,7 @@ import '../../bloc/home/home_state.dart';
 import '../../bloc/register/register_state.dart';
 import '../../bloc/settings/settings_bloc.dart';
 import '../../bloc/settings/settings_state.dart';
+import 'countries_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -88,13 +89,13 @@ class _HomePageState extends State<HomePage> {
   Widget _getScreenBody(int currentPageIndex) {
     switch (currentPageIndex) {
       case 0:
-        return ProfilePage();
+        return const ProfilePage();
       case 1:
-        return ProfilePage();
+        return const CountriesPage();
       case 2:
         return ProfilePage();
     }
-    return ProfilePage();
+    return const ProfilePage();
   }
 
   Widget _getBottomNavigationBar() {

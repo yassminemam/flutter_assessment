@@ -1,5 +1,6 @@
 import 'package:data_connection_checker_nulls/data_connection_checker_nulls.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_assessment/feature/domain/usecase/get_countries/get_countries.dart';
 import 'package:flutter_assessment/feature/domain/usecase/get_settings/get_settings.dart';
 import 'package:flutter_assessment/feature/domain/usecase/login_user/login_user.dart';
 import 'package:flutter_assessment/feature/domain/usecase/update_settings/update_settings.dart';
@@ -9,12 +10,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'config/flavour_config.dart';
 import 'core/network/network_info.dart';
 import 'core/util/dio_logging_interceptor.dart';
+import 'feature/data/datasource/home/home_remote_data_source.dart';
 import 'feature/data/datasource/login/login_remote_data_source.dart';
 import 'feature/data/datasource/register/register_remote_data_source.dart';
 import 'feature/data/datasource/settings/settings_local_data_source.dart';
+import 'feature/data/repository/home/home_repository_impl.dart';
 import 'feature/data/repository/login/login_repository_impl.dart';
 import 'feature/data/repository/register/register_repository_impl.dart';
 import 'feature/data/repository/settings/settings_repository_impl.dart';
+import 'feature/domain/repository/home/home_repository.dart';
 import 'feature/domain/repository/login/login_repository.dart';
 import 'feature/domain/repository/register/register_repository.dart';
 import 'feature/domain/repository/settings/settings_repository.dart';
@@ -58,36 +62,45 @@ Future<void> init() async {
    */
   // Data Source
   sl.registerLazySingleton<RegisterRemoteDataSource>(
-          () => RegisterRemoteDataSourceImpl(dio: sl()));
+      () => RegisterRemoteDataSourceImpl(dio: sl()));
   sl.registerLazySingleton<LoginRemoteDataSource>(
-          () => LoginRemoteDataSourceImpl(dio: sl()));
+      () => LoginRemoteDataSourceImpl(dio: sl()));
   sl.registerLazySingleton<SettingsLocalDataSource>(
-          () => SettingsLocalDataSourceImpl(sharedPref: sl()));
+      () => SettingsLocalDataSourceImpl(sharedPref: sl()));
+  sl.registerLazySingleton<HomeRemoteDataSource>(
+      () => HomeRemoteDataSourceImpl(dio: sl()));
+
   // Repository
   sl.registerLazySingleton<RegisterRepository>(() => RegisterRepositoryImpl(
       registerRemoteDataSource: sl(), networkInfo: sl()));
   sl.registerLazySingleton<LoginRepository>(() =>
       LoginRepositoryImpl(loginRemoteDataSource: sl(), networkInfo: sl()));
   sl.registerLazySingleton<SettingsRepository>(
-          () => SettingsRepositoryImpl(settingsLocalDataSource: sl()));
+      () => SettingsRepositoryImpl(settingsLocalDataSource: sl()));
+  sl.registerLazySingleton<HomeRepository>(
+      () => HomeRepositoryImpl(homeRemoteDataSource: sl(), networkInfo: sl()));
   // Use Case
   sl.registerLazySingleton(() => GetDependencies(registerRepo: sl()));
   sl.registerLazySingleton(() => SendRegister(registerRepo: sl()));
   sl.registerLazySingleton(() => LoginUser(loginRepo: sl()));
   sl.registerLazySingleton(() => UpdateSettings(settingsRepo: sl()));
   sl.registerLazySingleton(() => GetSettings(settingsRepo: sl()));
-
+  sl.registerLazySingleton(() => GetCountries(homeRepository: sl()));
   // Bloc
   sl.registerFactory(
-        () => RegisterBloc(
-      registerRepo: sl(),
+    () => RegisterBloc(
+      getDependencies: sl(),
+      sendRegister: sl(),
     ),
   );
   sl.registerFactory(
-        () => LoginBloc(loginRepo: sl()),
+    () => LoginBloc(loginUser: sl()),
   );
   sl.registerFactory(
-        () => SettingsBloc(settingsRepo: sl()),
+    () => SettingsBloc(
+      updateSettings: sl(),
+      getSettings: sl(),
+    ),
   );
-  sl.registerFactory(() => HomeBloc());
+  sl.registerFactory(() => HomeBloc(getCountries: sl()));
 }

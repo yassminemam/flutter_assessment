@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_assessment/core/error/failure.dart';
 import 'package:flutter_assessment/feature/data/model/dependencies/dependencies_response_model.dart';
 import '../../../../core/error/exception.dart';

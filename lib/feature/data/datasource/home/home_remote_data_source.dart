@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<dynamic> getWhoAmIRequest();
+  Future<dynamic> getCoutries();
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -12,7 +12,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   });
 
   @override
-  Future getWhoAmIRequest() {
+  Future getCoutries() {
     // TODO: implement getWhoAmIRequest
     throw UnimplementedError();
   }

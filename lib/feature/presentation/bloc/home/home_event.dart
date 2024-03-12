@@ -10,3 +10,10 @@ class UpdatePageEvent extends HomeEvent {
   @override
   List<Object?> get props => [newIndex];
 }
+
+class GetCountriesEvent extends HomeEvent {
+  const GetCountriesEvent();
+
+  @override
+  List<Object?> get props => [];
+}

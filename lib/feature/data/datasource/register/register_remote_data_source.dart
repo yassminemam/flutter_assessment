@@ -35,6 +35,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
           AppServerError.fromJson(ex.response?.data ?? ex.message);
       throw AppException(error?.toString() ?? "Unknown Server Error");
     }
+    return null;
   }
 
   @override

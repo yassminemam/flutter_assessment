@@ -1,11 +1,14 @@
 import 'package:bloc/bloc.dart';
-import '../../../domain/repository/register/register_repository.dart';
+import 'package:flutter_assessment/feature/domain/usecase/send_register/send_register.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../../../domain/usecase/get_dependencies/get_dependencies.dart';
 import 'register_event.dart';
 import 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc({
-    required this.registerRepo,
+    required this.getDependencies,
+    required this.sendRegister,
   }) : super(const RegisterState()) {
     on<GetDependenciesEvent>(_mapGetDependenciesEventToState);
     on<UpdateIsValidFormEvent>(_mapUpdateIsValidFormEventToState);
@@ -15,7 +18,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<SendRegisterRequestEvent>(_mapSendRegisterEventToState);
   }
 
-  final RegisterRepository registerRepo;
+  final GetDependencies getDependencies;
+  final SendRegister sendRegister;
 
   void _mapGetDependenciesEventToState(
       GetDependenciesEvent event, Emitter<RegisterState> emit) async {
@@ -26,7 +30,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         currentPageIndex: state.currentPageIndex,
       ),
     );
-    await registerRepo.getDependencies().then((result) {
+    await getDependencies.call(NoParams()).then((result) {
       result.fold((l) {
         emit(
           state.copyWith(
@@ -98,8 +102,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           formErrorMsg: state.formErrorMsg,
           registerRequestModel: state.registerRequestModel),
     );
-    await registerRepo
-        .sendRegisterRequest(body: state.registerRequestModel!)
+    await sendRegister
+        .call(ParamsSendRegister(body: state.registerRequestModel!))
         .then((result) {
       result.fold((l) {
         emit(

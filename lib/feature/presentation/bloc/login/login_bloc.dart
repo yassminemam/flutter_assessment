@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
-import '../../../domain/repository/login/login_repository.dart';
+import '../../../domain/usecase/login_user/login_user.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({required this.loginRepo}) : super(const LoginState()) {
+  LoginBloc({required this.loginUser}) : super(const LoginState()) {
     on<LoginUserEvent>(_mapLoginUserEventToState);
   }
 
-  final LoginRepository loginRepo;
+  final LoginUser loginUser;
 
   void _mapLoginUserEventToState(
       LoginUserEvent event, Emitter<LoginState> emit) async {
@@ -18,7 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         body: event.body,
       ),
     );
-    await loginRepo.login(body: event.body).then((result) {
+    await loginUser.call(ParamsLoginUser(body: event.body)).then((result) {
       result.fold((l) {
         emit(
           state.copyWith(
