@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return SafeArea(child: _getScreenBody());
+        return _getScreenBody();
       },
     );
   }

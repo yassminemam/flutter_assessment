@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.white,
         body: BlocListener<RegisterBloc, RegisterState>(
           listener: (BuildContext context, RegisterState state) {
             if (state.status == RegisterStates.loading) {
@@ -68,8 +69,7 @@ class _HomePageState extends State<HomePage> {
             builder: (context, regState) {
               return BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
-                  if (regState.status == RegisterStates.loaded ||
-                      regState.dependencies != null) {
+                  if (regState.dependencies != null) {
                     return SafeArea(
                         child: _getScreenBody(state.currentPageIndex ?? 0));
                   }

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import '../../../../core/usecase/usecase.dart';
 import '../../../domain/usecase/get_countries/get_countries.dart';
 import 'home_event.dart';
 import 'home_state.dart';
@@ -9,14 +8,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<UpdatePageEvent>(_mapUpdatePageEventToState);
     on<GetCountriesEvent>(_mapGetCountriesEventToState);
   }
+
   final GetCountries getCountries;
 
   void _mapUpdatePageEventToState(
       UpdatePageEvent event, Emitter<HomeState> emit) {
     emit(
       state.copyWith(
-          status: HomeStates.success,
-          currentPageIndex: event.newIndex),
+          status: HomeStates.success, currentPageIndex: event.newIndex),
     );
   }
 
@@ -24,10 +23,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       GetCountriesEvent event, Emitter<HomeState> emit) async {
     emit(
       state.copyWith(
-          status: HomeStates.loading,
-          currentPageIndex: state.currentPageIndex),
+          status: HomeStates.loading, currentPageIndex: state.currentPageIndex),
     );
-    await getCountries.call(NoParams()).then((result) {
+    await getCountries
+        .call(ParamsGetCountries(pageIndex: event.newPageIndex))
+        .then((result) {
       result.fold((l) {
         emit(
           state.copyWith(

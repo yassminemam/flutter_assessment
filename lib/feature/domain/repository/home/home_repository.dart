@@ -4,6 +4,6 @@ import '../../../../core/error/failure.dart';
 import '../../../data/model/home/countries_response_model.dart';
 
 abstract class HomeRepository {
-  Future<Either<Failure, CountriesResponseModel?>> getCountries();
+  Future<Either<Failure, CountriesResponseModel?>> getCountries({int? index});
 
 }

@@ -16,11 +16,11 @@ class HomeRepositoryImpl implements HomeRepository {
   });
 
   @override
-  Future<Either<Failure, CountriesResponseModel?>> getCountries() async {
+  Future<Either<Failure, CountriesResponseModel?>> getCountries({int? index}) async {
     var isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
-        var response = await homeRemoteDataSource.getCoutries();
+        var response = await homeRemoteDataSource.getCountries(pageIndex: index);
         return Right(response);
       } on AppException catch (exp) {
         return Left(ServerFailure(exp.errorMessage));

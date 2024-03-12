@@ -44,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       body: BlocListener<LoginBloc, LoginState>(
         listener: (BuildContext context, LoginState state) {
           if (state.status == LoginStates.loading) {
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           } else if (state.status == LoginStates.failure) {
             LockOverlay().closeOverlay();
             Tools.showErrorMessage(state.error?.errorMessage);
-          } else if (state.status == LoginStates.loaded) {
+          } else if (state.status == LoginStates.success) {
             LockOverlay().closeOverlay();
             SettingsBloc settingsBloc =
             BlocProvider.of<SettingsBloc>(context);

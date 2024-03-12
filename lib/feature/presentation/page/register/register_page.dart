@@ -41,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         key: scaffoldKey,
+        backgroundColor: Colors.white,
         body: BlocListener<RegisterBloc, RegisterState>(
           listener: (BuildContext context, RegisterState state) {
             if (state.status == RegisterStates.loading) {
@@ -82,7 +83,8 @@ class _RegisterPageState extends State<RegisterPage> {
           child: InkWell(
             onTap: () {
               if ((pageIndex - 1) >= 1) {
-                _registerBloc.add(UpdateRegisterPageEvent(newIndex: pageIndex - 1));
+                _registerBloc
+                    .add(UpdateRegisterPageEvent(newIndex: pageIndex - 1));
               } else {
                 context.go('/');
               }

@@ -3,7 +3,7 @@ import 'package:flutter_assessment/feature/data/model/login/login_request_model.
 import 'package:flutter_assessment/feature/data/model/login/login_response_model.dart';
 import '../../../../core/error/failure.dart';
 
-enum LoginStates { initial, loading, loaded, failure }
+enum LoginStates { initial, loading, success, failure }
 
 class LoginState extends Equatable {
   const LoginState({

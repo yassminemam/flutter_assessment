@@ -30,7 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }, (r) {
         emit(
           state.copyWith(
-            status: LoginStates.loaded,
+            status: LoginStates.success,
             loginResponse: r,
           ),
         );
