@@ -30,7 +30,7 @@ class Data {
   String? firstName;
   String? lastName;
   String? about;
-  List<Tags>? tags;
+  List<UserTag>? tags;
   List<String>? favoriteSocialMedia;
   int? salary;
   String? email;
@@ -59,9 +59,9 @@ class Data {
     lastName = json['last_name'];
     about = json['about'];
     if (json['tags'] != null) {
-      tags = <Tags>[];
+      tags = <UserTag>[];
       json['tags'].forEach((v) {
-        tags!.add(new Tags.fromJson(v));
+        tags!.add(new UserTag.fromJson(v));
       });
     }
     favoriteSocialMedia = json['favorite_social_media'].cast<String>();
@@ -95,13 +95,13 @@ class Data {
   }
 }
 
-class Tags {
+class UserTag {
   int? id;
   String? name;
 
-  Tags({this.id, this.name});
+  UserTag({this.id, this.name});
 
-  Tags.fromJson(Map<String, dynamic> json) {
+  UserTag.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

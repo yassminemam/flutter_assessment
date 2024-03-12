@@ -9,7 +9,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }) : super(const RegisterState()) {
     on<GetDependenciesEvent>(_mapGetDependenciesEventToState);
     on<UpdateIsValidFormEvent>(_mapUpdateIsValidFormEventToState);
-    on<UpdatePageEvent>(_mapUpdatePageEventToState);
+    on<UpdateRegisterPageEvent>(_mapUpdatePageEventToState);
     on<UpdateRegisterRequestModelEvent>(
         _mapUpdateRegisterRequestModelEventToState);
     on<SendRegisterRequestEvent>(_mapSendRegisterEventToState);
@@ -63,7 +63,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   void _mapUpdatePageEventToState(
-      UpdatePageEvent event, Emitter<RegisterState> emit) {
+      UpdateRegisterPageEvent event, Emitter<RegisterState> emit) {
     emit(
       state.copyWith(
           status: RegisterStates.loaded,

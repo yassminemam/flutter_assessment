@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';import 'package:flutter_assessment/feature/data/model/settings/settings_model.dart';
 import '../../../../core/error/failure.dart';
 
-enum SettingsStates { initial, loading, failure, success }
+enum SettingsStates { initial, loading, loaded,failure, success }
 class SettingsState extends Equatable {
   const SettingsState({
     this.status = SettingsStates.initial,

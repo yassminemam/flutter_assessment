@@ -21,11 +21,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   Future<LoginResponseModel?> sendLoginRequest(
       {required LoginRequestModel body}) async {
     try {
-      Map<String, dynamic> headers = {};
-      headers['Content-Type'] = "application/json";
-      headers['Accept'] = "application/json";
-      headers['Accept-Language'] = "ar";
-      dio.options.headers = headers;
+      dio.options.headers['Content-Type'] = "application/json";
       var response =
           await dio.post(EndPoints.loginUser, data: jsonEncode(body.toJson()));
       if (response.statusCode == 200) {
@@ -34,8 +30,10 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       return null;
     } on DioException catch (ex) {
       AppServerError? error =
-      AppServerError.fromJson(ex.response?.data ?? ex.message);
-      throw AppException(error?.toString() ?? "Unknown Server Error");
+          AppServerError.fromJson(ex.response?.data ?? ex.message);
+      throw AppException(error?.toString() ??
+          ex.response?.data.toString() ??
+          "Unknown Server Error");
     }
   }
 }

@@ -63,47 +63,6 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
         "icon": "assets/icon/${s.value}_ic.svg"
       });
     }
-    if (_registerBloc.state.registerRequestModel != null) {
-      if (_registerBloc.state.registerRequestModel!.avatarFilePath != null &&
-          _registerBloc.state.registerRequestModel!.avatarFileName != null) {
-        _avatarFilePath =
-            _registerBloc.state.registerRequestModel!.avatarFilePath!;
-        _avatarFileName =
-            _registerBloc.state.registerRequestModel!.avatarFileName!;
-      }
-      _aboutCon.text = _registerBloc.state.registerRequestModel!.about ?? "";
-      _birthDateCon.text =
-          _registerBloc.state.registerRequestModel!.birthDate ?? "";
-      if (_registerBloc.state.registerRequestModel!.salary != null) {
-        _salary = _registerBloc.state.registerRequestModel!.salary!.toInt();
-      }
-      if (_registerBloc.state.registerRequestModel!.gender != null) {
-        _userGender = _registerBloc.state.registerRequestModel!.gender;
-      }
-      if (_registerBloc.state.dependencies != null &&
-          _registerBloc.state.registerRequestModel!.tags != null) {
-        for (num tag in _registerBloc.state.registerRequestModel!.tags!) {
-          _selectedSkills.add(_skillsList
-                  .firstWhere((element) => (element.value == tag.toInt()))
-                  .label ??
-              "");
-        }
-      }
-      if (_registerBloc.state.registerRequestModel!.gender != null) {
-        _userGender = _registerBloc.state.registerRequestModel!.gender;
-      }
-      if (_registerBloc.state.registerRequestModel!.favSocialMedia != null) {
-        for (String socialItem
-            in _registerBloc.state.registerRequestModel!.favSocialMedia!) {
-          for (var s in _socialMediaValues) {
-            if (s["label"].toString().toLowerCase() == socialItem) {
-              int index = _socialMediaValues.indexOf(s);
-              _socialMediaValues[index]["value"] = true;
-            }
-          }
-        }
-      }
-    }
     super.initState();
   }
 
@@ -483,44 +442,55 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
       child: Column(children: [
-        SubTxtWidget(AppStrings.skills),
+        SubTxtWidget(AppStrings.favSocialMedia),
         SizedBox(
           height: 10.h,
         ),
         Column(
           children: List.generate(
             _socialMediaValues.length,
-            (index) => CheckboxListTile(
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
-              dense: true,
-              title: Row(
-                children: [
-                  SvgPicture.asset(_socialMediaValues[index]["icon"],
-                      width: 20.w, height: 20.h),
-                  SizedBox(
-                    width: 3.w,
+            (index) => Row(
+              children: [
+                Checkbox(
+                  value: _socialMediaValues[index]["value"],
+                  checkColor: Colors.white,
+                  activeColor: AppColors.appMainColor,
+                  side: MaterialStateBorderSide.resolveWith(
+                        (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.selected)) {
+                        return const BorderSide(width: 1, color: AppColors.appMainColor,);
+                      }
+                      return const BorderSide(width: 1, color: AppColors.color_C3C5C8,);
+                    },
                   ),
-                  Text(
-                    _socialMediaValues[index]["label"],
-                    style:
-                        AppTxtStyles.btnTxtStyle.copyWith(color: Colors.black),
-                  )
-                ],
-              ),
-              value: _socialMediaValues[index]["value"],
-              onChanged: (value) {
-                setState(() {
-                  _socialMediaValues[index]["value"] = value;
-                  if (_selectedSocialMedia
-                      .contains(_socialMediaValues[index])) {
-                    _selectedSocialMedia.remove(_socialMediaValues[index]);
-                  } else {
-                    _selectedSocialMedia.add(_socialMediaValues[index]);
-                  }
-                });
-              },
-            ),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  onChanged: (value) {
+                    setState(() {
+                      _socialMediaValues[index]["value"] = value;
+                      if (_selectedSocialMedia
+                          .contains(_socialMediaValues[index])) {
+                        _selectedSocialMedia.remove(_socialMediaValues[index]);
+                      } else {
+                        _selectedSocialMedia.add(_socialMediaValues[index]);
+                      }
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: 12.w,
+                ),
+                SvgPicture.asset(_socialMediaValues[index]["icon"],
+                    width: 20.w, height: 20.h),
+                SizedBox(
+                  width: 5.w,
+                ),
+                Text(
+                  _socialMediaValues[index]["label"],
+                  style:
+                  AppTxtStyles.btnTxtStyle.copyWith(color: Colors.black),
+                )
+              ],
+            )
           ),
         )
       ]),

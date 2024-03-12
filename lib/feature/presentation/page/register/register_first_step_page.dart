@@ -28,7 +28,7 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passwordCon = TextEditingController();
   final TextEditingController _passwordConfirmCon = TextEditingController();
-  int _userTypeIndex = 0;
+  int _userTypeIndex = 5;
   UserType? _userType;
   late final RegisterBloc _registerBloc;
 
@@ -39,8 +39,12 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
       if (_registerBloc.state.registerRequestModel!.type != null &&
           _registerBloc.state.dependencies != null) {
         _userTypeIndex = _registerBloc.state.registerRequestModel!.type!;
-        _userType =
-            _registerBloc.state.dependencies!.data?.types?[_userTypeIndex - 1];
+        int typesListLength =
+            _registerBloc.state.dependencies!.data?.types!.length ?? 0;
+        if ((_userTypeIndex - 1) < typesListLength) {
+          _userType = _registerBloc
+              .state.dependencies!.data?.types?[_userTypeIndex - 1];
+        }
       }
       _firstNameCon.text =
           _registerBloc.state.registerRequestModel!.firstName ?? "";
@@ -202,20 +206,16 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
         _passwordConfirmCon.text.isEmpty ||
         _userTypeIndex == 0) {
       _registerBloc.add(const UpdateIsValidFormEvent(
-          isValid: false,
-          formErrorMsg: AppStrings.errorFillAllFieldsError));
+          isValid: false, formErrorMsg: AppStrings.errorFillAllFieldsError));
       return false;
     } else {
-      if (_passwordCon.text.length < 8 ||
-          _passwordConfirmCon.text.length < 8) {
+      if (_passwordCon.text.length < 8 || _passwordConfirmCon.text.length < 8) {
         _registerBloc.add(const UpdateIsValidFormEvent(
-            isValid: false,
-            formErrorMsg: AppStrings.errorPasswordLength));
+            isValid: false, formErrorMsg: AppStrings.errorPasswordLength));
         return false;
       } else if (_passwordCon.text != _passwordConfirmCon.text) {
         _registerBloc.add(const UpdateIsValidFormEvent(
-            isValid: false,
-            formErrorMsg: AppStrings.errorPasswordNotMatching));
+            isValid: false, formErrorMsg: AppStrings.errorPasswordNotMatching));
         return false;
       } else {
         _registerBloc.add(const UpdateIsValidFormEvent(isValid: true));

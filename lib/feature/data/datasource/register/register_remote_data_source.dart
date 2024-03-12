@@ -41,12 +41,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
   Future<dynamic> sendRegisterRequest(
       {required RegisterRequestModel body}) async {
     try {
-      Map<String, dynamic> headers = {};
-      headers['Content-Type'] = "multipart/form-data";
-      headers['Accept'] = "application/json";
-      headers['Accept-Language'] = "ar";
-      dio.options.headers = headers;
-
+      dio.options.headers['Content-Type'] = "multipart/form-data";
       dioLib.FormData formDataBody =
           dioLib.FormData.fromMap(body.toJson(), ListFormat.multiCompatible);
       var response = await dio.post(EndPoints.sendRegister, data: formDataBody);

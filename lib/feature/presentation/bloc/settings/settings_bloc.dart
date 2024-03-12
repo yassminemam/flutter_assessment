@@ -5,14 +5,14 @@ import 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({required this.settingsRepo}) : super(const SettingsState()) {
-    on<UpdateSettingsEvent>(_mapUpdateSettingsEventToState);
-    on<GetSettingsEvent>(_mapGetSettingsEventToState);
+    on<UpdateSessionEvent>(_mapUpdateSettingsEventToState);
+    on<GetSessionEvent>(_mapGetSettingsEventToState);
   }
 
   final SettingsRepository settingsRepo;
 
   void _mapUpdateSettingsEventToState(
-      UpdateSettingsEvent event, Emitter<SettingsState> emit) async {
+      UpdateSessionEvent event, Emitter<SettingsState> emit) async {
     emit(state.copyWith(
       status: SettingsStates.loading,
     ));
@@ -23,7 +23,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         emit(
           state.copyWith(
             status: SettingsStates.failure,
-            settingsModel: state.settingsModel,
+            settingsModel: event.settingsModel,
             error: l,
           ),
         );
@@ -38,7 +38,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   void _mapGetSettingsEventToState(
-      GetSettingsEvent event, Emitter<SettingsState> emit) async {
+      GetSessionEvent event, Emitter<SettingsState> emit) async {
     emit(state.copyWith(
       status: SettingsStates.loading,
     ));
@@ -53,7 +53,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         );
       }, (r) {
         emit(
-          state.copyWith(status: SettingsStates.success, settingsModel: r),
+          state.copyWith(status: SettingsStates.loaded, settingsModel: r),
         );
       });
     });

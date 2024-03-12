@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passwordCon = TextEditingController();
-  late LoginBloc _loginBloc;
+  late final LoginBloc _loginBloc;
 
   @override
   void initState() {
@@ -52,14 +52,14 @@ class _LoginPageState extends State<LoginPage> {
             LockOverlay().closeOverlay();
             Tools.showErrorMessage(state.error?.errorMessage);
           } else if (state.status == LoginStates.loaded) {
+            LockOverlay().closeOverlay();
             SettingsBloc settingsBloc =
             BlocProvider.of<SettingsBloc>(context);
-            settingsBloc.add(UpdateSettingsEvent(
+            settingsBloc.add(UpdateSessionEvent(
                 settingsModel: SettingsModel(
                     authToken: state.loginResponse?.accessToken ?? "",
                     isLogin: true)));
-            LockOverlay().closeOverlay();
-            context.go('/$homeRoute');
+            //context.go('/$homeRoute');
           }
         },
         child: BlocBuilder<LoginBloc, LoginState>(

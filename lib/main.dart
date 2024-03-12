@@ -49,10 +49,10 @@ class MyApp extends StatelessWidget {
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              brightness: Brightness.light,
               colorScheme:
                   const ColorScheme.light(primary: AppColors.appMainColor),
-              buttonTheme:
-                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+              unselectedWidgetColor: AppColors.color_C3C5C8,
             ),
             routerConfig:
                 GoRouter(routes: allRouts, navigatorKey: Tools.navigatorKey),

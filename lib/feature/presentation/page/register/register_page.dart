@@ -82,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: InkWell(
             onTap: () {
               if ((pageIndex - 1) >= 1) {
-                _registerBloc.add(UpdatePageEvent(newIndex: pageIndex - 1));
+                _registerBloc.add(UpdateRegisterPageEvent(newIndex: pageIndex - 1));
               } else {
                 context.go('/');
               }
@@ -164,7 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _goToNext() {
     int pageIndex = _registerBloc.state.currentPageIndex ?? 1;
     if ((pageIndex + 1) <= _allStepsCount) {
-      _registerBloc.add(UpdatePageEvent(newIndex: pageIndex + 1));
+      _registerBloc.add(UpdateRegisterPageEvent(newIndex: pageIndex + 1));
     }
   }
 }

@@ -16,13 +16,13 @@ List<RouteBase> allRouts = <RouteBase>[
     path: '/',
     builder: (BuildContext context, GoRouterState state) {
       SettingsBloc settingsBloc = BlocProvider.of<SettingsBloc>(context);
-      settingsBloc.add(const GetSettingsEvent());
+      if (settingsBloc.state.status == SettingsStates.initial) {
+        settingsBloc.add(const GetSessionEvent());
+      }
       return BlocBuilder<SettingsBloc, SettingsState>(
-        buildWhen: (prev, current) =>
-            ((current.status != SettingsStates.initial) &&
-                (current.status != SettingsStates.loading)),
         builder: (context, state) {
-          if (state.status == SettingsStates.success) {
+          if (state.status == SettingsStates.loaded ||
+              state.status == SettingsStates.success) {
             if (settingsBloc.state.settingsModel != null &&
                 settingsBloc.state.settingsModel!.isLogin) {
               return const HomePage();
@@ -30,9 +30,11 @@ List<RouteBase> allRouts = <RouteBase>[
               return const LoginPage();
             }
           }
-          return const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.appMainColor,
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.appMainColor,
+              ),
             ),
           );
         },

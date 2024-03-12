@@ -5,17 +5,17 @@ abstract class SettingsEvent extends Equatable {
   const SettingsEvent();
 }
 
-class UpdateSettingsEvent extends SettingsEvent {
+class UpdateSessionEvent extends SettingsEvent {
   final SettingsModel settingsModel;
 
-  const UpdateSettingsEvent({required this.settingsModel});
+  const UpdateSessionEvent({required this.settingsModel});
 
   @override
   List<Object?> get props => [settingsModel];
 }
 
-class GetSettingsEvent extends SettingsEvent {
-  const GetSettingsEvent();
+class GetSessionEvent extends SettingsEvent {
+  const GetSessionEvent();
 
   @override
   List<Object?> get props => [];

@@ -5,11 +5,10 @@ class AppServerError {
   AppServerError({this.message, this.errors});
 
   static AppServerError? fromJson(Map<String, dynamic> json) {
-    try {
+    if(json['message'] != null) {
       return AppServerError(message: json['message'], errors: json['errors']?.toString());
-    } catch (e) {
-      return null;
     }
+    return null;
   }
 
   @override

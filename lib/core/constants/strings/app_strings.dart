@@ -34,4 +34,5 @@ class AppStrings {
   static const yes = "Yes";
   static const no = "No";
   static const profileHeader = "Who am I";
+  static const favSocialMedia = "Favourite Social Media";
 }

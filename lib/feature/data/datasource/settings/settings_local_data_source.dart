@@ -17,7 +17,7 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   @override
   Future<void> updateUserSettings({required SettingsModel settings}) async {
     await sharedPref.setBool('isLogin', settings.isLogin);
-    await sharedPref.setString('authToken', settings.authToken);
+    await sharedPref.setString('authToken', "Bearer ${settings.authToken}");
   }
 
   @override

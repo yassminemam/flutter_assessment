@@ -1,22 +1,22 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/home/home_event.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/login/login_bloc.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/register/register_bloc.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/register/register_event.dart';
+import 'package:flutter_assessment/feature/presentation/bloc/settings/settings_event.dart';
 import 'package:flutter_assessment/feature/presentation/page/home/profile_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../../core/constants/strings/app_strings.dart';
-import '../../../../core/theme/text_styles.dart';
 import '../../../../core/util/lock_overlay.dart';
 import '../../../../core/util/tools.dart';
-import '../../../data/model/dependencies/dependencies_response_model.dart';
+import '../../../data/model/settings/settings_model.dart';
 import '../../bloc/home/home_bloc.dart';
 import '../../bloc/home/home_state.dart';
-import '../../bloc/login/login_state.dart';
-import '../../widget/input_widget.dart';
-import '../../widget/sub_txt_widget.dart';
+import '../../bloc/register/register_state.dart';
+import '../../bloc/settings/settings_bloc.dart';
+import '../../bloc/settings/settings_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,17 +27,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late RegisterBloc _registerBloc;
-  late HomeBloc _homeBloc;
-  String _avatarFilePath = "";
-  int _userTypeIndex = 0;
-  UserType? _userType;
-  int? _userGender;
+
+  late final RegisterBloc _registerBloc;
+  late final LoginBloc _loginBloc;
+  late final SettingsBloc _settingsBloc;
 
   @override
   void initState() {
     _registerBloc = BlocProvider.of<RegisterBloc>(context);
-    _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _loginBloc = BlocProvider.of<LoginBloc>(context);
+    _settingsBloc = BlocProvider.of<SettingsBloc>(context);
+    if (_loginBloc.state.loginResponse == null) {
+      _settingsBloc.add(UpdateSessionEvent(
+          settingsModel: SettingsModel(authToken: '', isLogin: false)));
+    } else if ((_settingsBloc.state.status == SettingsStates.loaded ||
+            _settingsBloc.state.status == SettingsStates.success) &&
+        _registerBloc.state.dependencies == null) {
+      _registerBloc.add(const GetDependenciesEvent());
+    }
     super.initState();
   }
 
@@ -46,30 +53,48 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: true,
-        body: BlocProvider<HomeBloc>(
-            create: (context) => _homeBloc,
-            child: BlocListener<HomeBloc, HomeState>(
-              listener: (BuildContext context, HomeState state) {
-                if (state.status == HomeStates.loading) {
-                  LockOverlay().showLoadingOverlay(_scaffoldKey.currentContext);
-                } else if (state.status == HomeStates.failure) {
-                  LockOverlay().closeOverlay();
-                  Tools.showErrorMessage(state.error?.errorMessage);
-                } else if (state.status == HomeStates.success) {
-                  LockOverlay().closeOverlay();
-                }
-              },
-              child: BlocBuilder<HomeBloc, HomeState>(
+        body: BlocListener<RegisterBloc, RegisterState>(
+          listener: (BuildContext context, RegisterState state) {
+            if (state.status == RegisterStates.loading) {
+              LockOverlay().showLoadingOverlay(_scaffoldKey.currentContext);
+            } else if (state.status == RegisterStates.failure) {
+              LockOverlay().closeOverlay();
+              Tools.showErrorMessage(state.error?.errorMessage);
+            } else if (state.status == RegisterStates.loaded) {
+              LockOverlay().closeOverlay();
+            }
+          },
+          child: BlocBuilder<RegisterBloc, RegisterState>(
+            builder: (context, regState) {
+              return BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
-                  return SafeArea(child: _getScreenBody());
+                  if (regState.status == RegisterStates.loaded) {
+                    return SafeArea(
+                        child: _getScreenBody(state.currentPageIndex ?? 0));
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.appMainColor,
+                    ),
+                  );
                 },
-              ),
-            )),
+              );
+            },
+          ),
+        ),
         bottomNavigationBar: _getBottomNavigationBar());
   }
 
-  Widget _getScreenBody() {
-    return const ProfilePage();
+  Widget _getScreenBody(int currentPageIndex) {
+    switch (currentPageIndex) {
+      case 0:
+        return ProfilePage();
+      case 1:
+        return ProfilePage();
+      case 2:
+        return ProfilePage();
+    }
+    return ProfilePage();
   }
 
   Widget _getBottomNavigationBar() {
@@ -135,8 +160,8 @@ class _HomePageState extends State<HomePage> {
                   label: "Services",
                 ),
               ],
-              currentIndex: 0,
-              onTap: (int index) {},
+              currentIndex: state.currentPageIndex ?? 0,
+              onTap: (int index) => _changePage(index),
               backgroundColor: Colors.white,
               selectedItemColor: AppColors.appMainColor,
               unselectedItemColor: AppColors.color_C3C5C8,
@@ -149,5 +174,10 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ));
+  }
+
+  void _changePage(int newIndex) {
+    HomeBloc homeBloc = BlocProvider.of<HomeBloc>(context);
+    homeBloc.add(UpdatePageEvent(newIndex: newIndex));
   }
 }
