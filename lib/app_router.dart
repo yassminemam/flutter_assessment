@@ -21,8 +21,7 @@ List<RouteBase> allRouts = <RouteBase>[
       }
       return BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
-          if (state.status == SettingsStates.loaded ||
-              state.status == SettingsStates.success) {
+          if (state.status == SettingsStates.success) {
             if (settingsBloc.state.settingsModel != null &&
                 settingsBloc.state.settingsModel!.isLogin) {
               return const HomePage();

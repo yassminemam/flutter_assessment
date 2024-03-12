@@ -53,7 +53,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         );
       }, (r) {
         emit(
-          state.copyWith(status: SettingsStates.loaded, settingsModel: r),
+          state.copyWith(status: SettingsStates.success, settingsModel: r),
         );
       });
     });

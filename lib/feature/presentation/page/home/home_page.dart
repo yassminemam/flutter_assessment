@@ -40,8 +40,7 @@ class _HomePageState extends State<HomePage> {
     if (_loginBloc.state.loginResponse == null) {
       _settingsBloc.add(UpdateSessionEvent(
           settingsModel: SettingsModel(authToken: '', isLogin: false)));
-    } else if ((_settingsBloc.state.status == SettingsStates.loaded ||
-            _settingsBloc.state.status == SettingsStates.success) &&
+    } else if (_settingsBloc.state.status == SettingsStates.success &&
         _registerBloc.state.dependencies == null) {
       _registerBloc.add(const GetDependenciesEvent());
     }
@@ -68,7 +67,8 @@ class _HomePageState extends State<HomePage> {
             builder: (context, regState) {
               return BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
-                  if (regState.status == RegisterStates.loaded) {
+                  if (regState.status == RegisterStates.loaded ||
+                      regState.dependencies != null) {
                     return SafeArea(
                         child: _getScreenBody(state.currentPageIndex ?? 0));
                   }
