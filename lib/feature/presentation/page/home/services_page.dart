@@ -25,10 +25,10 @@ class _ServicesPageState extends State<ServicesPage> {
   void initState() {
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     if (_homeBloc.state.services == null) {
-      _homeBloc.add(const GetServicesEvent(isPopular: false));
+      _homeBloc.add(const GetServicesEvent());
     }
     if (_homeBloc.state.popularServices == null) {
-      _homeBloc.add(const GetServicesEvent(isPopular: true));
+      _homeBloc.add(const GetPopularServicesEvent());
     }
     super.initState();
   }
@@ -118,7 +118,7 @@ class _ServicesPageState extends State<ServicesPage> {
   }
 
   Widget _getPopularServices() {
-    List<Service> popularServices = _homeBloc.state.services?.data ?? [];
+    List<Service> popularServices = _homeBloc.state.popularServices?.data ?? [];
     return SingleChildScrollView(
       key: const PageStorageKey<String>('popularServicesListController'),
       scrollDirection: Axis.horizontal,

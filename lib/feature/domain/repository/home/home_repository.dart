@@ -6,5 +6,6 @@ import '../../../data/model/home/countries_response_model.dart';
 
 abstract class HomeRepository {
   Future<Either<Failure, CountriesResponseModel?>> getCountries({int? index});
-  Future<Either<Failure, ServicesResponseModel?>> getServices({required bool isPopular});
+  Future<Either<Failure, ServicesResponseModel?>> getServices();
+  Future<Either<Failure, ServicesResponseModel?>> getPopularServices();
 }

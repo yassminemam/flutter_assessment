@@ -6,26 +6,23 @@ import '../../../../core/usecase/usecase.dart';
 import '../../../data/model/home/services_response_model.dart';
 import '../../repository/home/home_repository.dart';
 
-class GetServices implements UseCase<ServicesResponseModel?, ParamsGetServices> {
+class GetServices implements UseCase<ServicesResponseModel?, NoParams> {
   final HomeRepository homeRepository;
 
   GetServices({required this.homeRepository});
 
   @override
-  Future<Either<Failure, ServicesResponseModel?>> call(ParamsGetServices params) async {
-    return await homeRepository.getServices(isPopular: params.isPopular);
+  Future<Either<Failure, ServicesResponseModel?>> call(NoParams noParams) async {
+    return await homeRepository.getServices();
   }
 }
-class ParamsGetServices extends Equatable {
-  final bool isPopular;
+class GetPopularServices implements UseCase<ServicesResponseModel?, NoParams> {
+  final HomeRepository homeRepository;
 
-  const ParamsGetServices({required this.isPopular});
-
-  @override
-  List<Object> get props => [isPopular];
+  GetPopularServices({required this.homeRepository});
 
   @override
-  String toString() {
-    return 'ParamsGetServices{isPopular: $isPopular';
+  Future<Either<Failure, ServicesResponseModel?>> call(NoParams noParams) async {
+    return await homeRepository.getPopularServices();
   }
 }

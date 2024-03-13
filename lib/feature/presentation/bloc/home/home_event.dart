@@ -23,10 +23,15 @@ class GetCountriesEvent extends HomeEvent {
 }
 
 class GetServicesEvent extends HomeEvent {
-  const GetServicesEvent({required this.isPopular});
-
-  final bool isPopular;
+  const GetServicesEvent();
 
   @override
-  List<Object> get props => [isPopular];
+  List<Object> get props => [];
+}
+
+class GetPopularServicesEvent extends HomeEvent {
+  const GetPopularServicesEvent();
+
+  @override
+  List<Object> get props => [];
 }

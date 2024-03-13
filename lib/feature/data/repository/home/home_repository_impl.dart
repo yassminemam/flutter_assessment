@@ -37,11 +37,26 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<Failure, ServicesResponseModel?>> getServices({required bool isPopular}) async {
+  Future<Either<Failure, ServicesResponseModel?>> getServices() async {
     var isConnected = await networkInfo.isConnected;
     if (isConnected) {
       try {
-        var response = await homeRemoteDataSource.getServices(isPopular: isPopular);
+        var response = await homeRemoteDataSource.getServices();
+        return Right(response);
+      } on AppException catch (exp) {
+        return Left(ServerFailure(exp.errorMessage));
+      }
+    } else {
+      return Left(ConnectionFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ServicesResponseModel?>> getPopularServices() async {
+    var isConnected = await networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        var response = await homeRemoteDataSource.getPopularServices();
         return Right(response);
       } on AppException catch (exp) {
         return Left(ServerFailure(exp.errorMessage));

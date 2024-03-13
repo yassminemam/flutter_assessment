@@ -10,7 +10,8 @@ import '../../model/home/services_response_model.dart';
 abstract class HomeRemoteDataSource {
   Future<CountriesResponseModel?> getCountries({int? pageIndex});
 
-  Future<ServicesResponseModel?> getServices({required bool isPopular});
+  Future<ServicesResponseModel?> getServices();
+  Future<ServicesResponseModel?> getPopularServices();
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -41,10 +42,9 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   }
 
   @override
-  Future<ServicesResponseModel?> getServices({required bool isPopular}) async {
+  Future<ServicesResponseModel?> getServices() async {
     try {
-      var response = await dio.get(
-          isPopular ? EndPoints.getPopularServices : EndPoints.getServices);
+      var response = await dio.get(EndPoints.getServices);
       if (response.statusCode == 200) {
         ServicesResponseModel servicesResponseModel =
             ServicesResponseModel.fromJson(response.data);
@@ -53,6 +53,22 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     } on DioException catch (ex) {
       AppServerError? error =
           AppServerError.fromJson(ex.response?.data ?? ex.message);
+      throw AppException(error?.toString() ?? AppStrings.unknownServerError);
+    }
+    return null;
+  }
+  @override
+  Future<ServicesResponseModel?> getPopularServices() async {
+    try {
+      var response = await dio.get(EndPoints.getPopularServices);
+      if (response.statusCode == 200) {
+        ServicesResponseModel popServicesResponseModel =
+        ServicesResponseModel.fromJson(response.data);
+        return popServicesResponseModel;
+      }
+    } on DioException catch (ex) {
+      AppServerError? error =
+      AppServerError.fromJson(ex.response?.data ?? ex.message);
       throw AppException(error?.toString() ?? AppStrings.unknownServerError);
     }
     return null;

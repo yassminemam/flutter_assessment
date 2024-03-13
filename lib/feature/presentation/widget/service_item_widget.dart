@@ -50,14 +50,16 @@ class ServiceItemWidget extends StatelessWidget {
                     left: 6,
                     bottom: 7,
                     child: Container(
+                      width: 60.w,
+                      height: 26.h,
                       decoration: BoxDecoration(
                           color: AppColors.appMainColor,
                           borderRadius: BorderRadius.all(
-                            Radius.circular(8.r),
+                            Radius.circular(27.r),
                           )),
                       child: Center(
                         child: Text(
-                          "\$ ${service.price ?? 0}",
+                          "\$${service.price ?? 0}",
                           textAlign: TextAlign.center,
                           style: AppTxtStyles.subHeaderTxtStyle
                               .copyWith(color: Colors.white),

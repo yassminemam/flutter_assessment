@@ -88,6 +88,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetSettings(settingsRepo: sl()));
   sl.registerLazySingleton(() => GetCountries(homeRepository: sl()));
   sl.registerLazySingleton(() => GetServices(homeRepository: sl()));
+  sl.registerLazySingleton(() => GetPopularServices(homeRepository: sl()));
   // Bloc
   sl.registerFactory(
     () => RegisterBloc(
@@ -104,5 +105,9 @@ Future<void> init() async {
       getSettings: sl(),
     ),
   );
-  sl.registerFactory(() => HomeBloc(getCountries: sl(), getServices: sl(),));
+  sl.registerFactory(() => HomeBloc(
+        getCountries: sl(),
+        getServices: sl(),
+        getPopularServices: sl(),
+      ));
 }
