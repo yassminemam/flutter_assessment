@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_assessment/core/constants/strings/app_assets.dart';
 import 'package:flutter_assessment/feature/data/model/register/register_request_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -135,7 +136,7 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
           controller: _passwordCon,
           obscureText: true,
           maxLines: 1,
-          suffixIcon: SvgPicture.asset('assets/icon/password_ic.svg',
+          suffixIcon: SvgPicture.asset(AppAssets.password_ic,
               width: 18.w, height: 18.h, fit: BoxFit.scaleDown),
         ),
         InputWidget(
@@ -143,7 +144,7 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
           controller: _passwordConfirmCon,
           obscureText: true,
           maxLines: 1,
-          suffixIcon: SvgPicture.asset('assets/icon/password_ic.svg',
+          suffixIcon: SvgPicture.asset(AppAssets.password_ic,
               width: 18.w, height: 18.h, fit: BoxFit.scaleDown),
         ),
       ],

@@ -23,7 +23,7 @@ class _CountriesPageState extends State<CountriesPage> {
   late HomeBloc _homeBloc;
   final NumberPaginatorController _paginatorController =
       NumberPaginatorController();
-
+  bool didShowHintBefore = false;
   @override
   void initState() {
     _homeBloc = BlocProvider.of<HomeBloc>(context);
@@ -38,7 +38,13 @@ class _CountriesPageState extends State<CountriesPage> {
     return BlocListener<HomeBloc, HomeState>(
       listener: (BuildContext context, HomeState state) {
         if (state.status == HomeStates.success && state.currentPageIndex == 1) {
-          Tools.showHintMsg(AppStrings.countriesPageHint);
+          if(!didShowHintBefore)
+            {
+              Tools.showHintMsg(AppStrings.countriesPageHint);
+              setState(() {
+                didShowHintBefore = true;
+              });
+            }
         }
         else if (state.status == HomeStates.failure) {
           Tools.showErrorMessage(state.error?.errorMessage);

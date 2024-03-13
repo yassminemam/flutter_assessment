@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
+import 'package:flutter_assessment/core/constants/strings/app_assets.dart';
 import 'package:flutter_assessment/core/theme/text_styles.dart';
 import 'package:flutter_assessment/feature/presentation/page/register/register_first_step_page.dart';
 import 'package:flutter_assessment/feature/presentation/page/register/register_second_step_page.dart';
@@ -92,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Row(
               children: [
                 SvgPicture.asset(
-                  'assets/icon/back_ic.svg',
+                  AppAssets.back_ic,
                   width: 8.w,
                   height: 15.w,
                 ),
@@ -125,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
           )),
       child: Row(
         children: [
-          SvgPicture.asset('assets/icon/error_ic.svg',
+          SvgPicture.asset(AppAssets.error_ic,
               width: 20.w, height: 20.h, fit: BoxFit.scaleDown),
           SizedBox(
             width: 10.w,

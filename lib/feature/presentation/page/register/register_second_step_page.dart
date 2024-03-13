@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_assessment/core/constants/strings/app_assets.dart';
 import 'package:flutter_assessment/core/theme/text_styles.dart';
 import 'package:flutter_assessment/feature/presentation/widget/scale_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +61,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
       _socialMediaValues.add({
         "label": s.label ?? "",
         "value": false,
-        "icon": "assets/icon/${s.value}_ic.svg"
+        "icon": AppAssets.getSocialMediaAssets(value: s.value ?? "")
       });
     }
     super.initState();
@@ -111,7 +112,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
                     child: CircleAvatar(
                       radius: 41.5.r,
                       backgroundImage: _avatarFilePath.isEmpty
-                          ? Image.asset("assets/icon/avatar_placeholder_ic.jpg")
+                          ? Image.asset(AppAssets.avatar_placeholder_ic)
                               .image
                           : FileImage(File(_avatarFilePath)),
                     ),
@@ -119,7 +120,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: SvgPicture.asset('assets/icon/add_img_ic.svg',
+                child: SvgPicture.asset(AppAssets.add_img_ic,
                     width: 25.w, height: 25.h),
               )
             ],
@@ -204,7 +205,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
       controller: _birthDateCon,
       isReadOnly: true,
       maxLines: 1,
-      suffixIcon: SvgPicture.asset('assets/icon/calendar_ic.svg',
+      suffixIcon: SvgPicture.asset(AppAssets.calendar_ic,
           width: 18.w, height: 18.h, fit: BoxFit.scaleDown),
       margin: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
       onTap: () async {
@@ -414,7 +415,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
                                             ),
                                             SizedBox(width: 5.0.w),
                                             SvgPicture.asset(
-                                                'assets/icon/delete_tag_ic.svg',
+                                                AppAssets.delete_tag_ic,
                                                 width: 12.w,
                                                 height: 12.h),
                                           ],

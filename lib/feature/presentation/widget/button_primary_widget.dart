@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
 import 'package:flutter_assessment/core/theme/text_styles.dart';
-import 'package:flutter_assessment/feature/presentation/widget/sub_txt_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 typedef callback = Function();

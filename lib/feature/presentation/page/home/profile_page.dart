@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
+import 'package:flutter_assessment/core/constants/strings/app_assets.dart';
 import 'package:flutter_assessment/feature/data/model/login/login_response_model.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/login/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,13 +72,13 @@ class _ProfilePageState extends State<ProfilePage> {
             _socialMediaValues.add({
               "label": _socialMediaList[x].label ?? "",
               "value": true,
-              "icon": "assets/icon/${_socialMediaList[x].value}_ic.svg"
+              "icon": AppAssets.getSocialMediaAssets(value: _socialMediaList[x].value ?? "")
             });
           } else {
             _socialMediaValues.add({
               "label": _socialMediaList[x].label ?? "",
               "value": false,
-              "icon": "assets/icon/${_socialMediaList[x].value}_ic.svg"
+              "icon": AppAssets.getSocialMediaAssets(value: _socialMediaList[x].value ?? "")
             });
           }
         }
@@ -151,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CircleAvatar(
                     radius: 41.5.r,
                     backgroundImage: _avatarUrl.isEmpty
-                        ? Image.asset("assets/icon/avatar_placeholder_ic.jpg")
+                        ? Image.asset(AppAssets.avatar_placeholder_ic)
                             .image
                         : NetworkImage(_avatarUrl),
                   ),
@@ -159,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Positioned(
               bottom: 0,
               right: 0,
-              child: SvgPicture.asset('assets/icon/add_img_ic.svg',
+              child: SvgPicture.asset(AppAssets.add_img_ic,
                   width: 25.w, height: 25.h),
             )
           ],
@@ -207,7 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
           maxLines: 1,
           isReadOnly: true,
           initialVal: "",
-          suffixIcon: SvgPicture.asset('assets/icon/password_ic.svg',
+          suffixIcon: SvgPicture.asset(AppAssets.password_ic,
               width: 18.w, height: 18.h, fit: BoxFit.scaleDown),
         ),
       ],
@@ -262,7 +263,7 @@ class _ProfilePageState extends State<ProfilePage> {
       title: AppStrings.birthDate,
       isReadOnly: true,
       initialVal: _loginBloc.state.loginResponse?.data?.birthDate ?? "",
-      suffixIcon: SvgPicture.asset('assets/icon/calendar_ic.svg',
+      suffixIcon: SvgPicture.asset(AppAssets.calendar_ic,
           width: 18.w, height: 18.h, fit: BoxFit.scaleDown),
       margin: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
     );
@@ -369,7 +370,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       SizedBox(width: 5.0.w),
                                       SvgPicture.asset(
-                                          'assets/icon/delete_tag_ic.svg',
+                                          AppAssets.delete_tag_ic,
                                           width: 12.w,
                                           height: 12.h),
                                     ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
+import 'package:flutter_assessment/core/constants/strings/app_strings.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/home/home_event.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/login/login_bloc.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/register/register_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_assessment/feature/presentation/page/home/services_page.
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../core/constants/strings/app_assets.dart';
 import '../../../../core/util/lock_overlay.dart';
 import '../../../../core/util/tools.dart';
 import '../../../data/model/settings/settings_model.dart';
@@ -112,54 +114,54 @@ class _HomePageState extends State<HomePage> {
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   activeIcon: SvgPicture.asset(
-                    'assets/icon/bar/profile_active_ic.svg',
+                    AppAssets.profile_active_ic,
                     width: 26.w,
                     height: 26.h,
                     colorFilter: const ColorFilter.mode(
                         AppColors.appMainColor, BlendMode.srcIn),
                   ),
                   icon: SvgPicture.asset(
-                    'assets/icon/bar/profile_ic.svg',
+                    AppAssets.profile_ic,
                     colorFilter: const ColorFilter.mode(
                         AppColors.color_C3C5C8, BlendMode.srcIn),
                     width: 26.w,
                     height: 26.h,
                   ),
-                  label: "Who am I",
+                  label: AppStrings.profileHeader,
                 ),
                 BottomNavigationBarItem(
                   activeIcon: SvgPicture.asset(
-                    'assets/icon/bar/countries_active_ic.svg',
+                    AppAssets.countries_active_ic,
                     width: 26.w,
                     height: 26.h,
                     colorFilter: const ColorFilter.mode(
                         AppColors.appMainColor, BlendMode.srcIn),
                   ),
                   icon: SvgPicture.asset(
-                    'assets/icon/bar/countries_ic.svg',
+                    AppAssets.countries_ic,
                     colorFilter: const ColorFilter.mode(
                         AppColors.color_C3C5C8, BlendMode.srcIn),
                     width: 26.w,
                     height: 26.h,
                   ),
-                  label: "Countries",
+                  label: AppStrings.countriesHeader,
                 ),
                 BottomNavigationBarItem(
                   activeIcon: SvgPicture.asset(
-                    'assets/icon/bar/services_active_ic.svg',
+                  AppAssets.services_active_ic,
                     colorFilter: const ColorFilter.mode(
                         AppColors.appMainColor, BlendMode.srcIn),
                     width: 22.w,
                     height: 22.h,
                   ),
                   icon: SvgPicture.asset(
-                    'assets/icon/bar/services_ic.svg',
+                  AppAssets.services_ic,
                     colorFilter: const ColorFilter.mode(
                         AppColors.color_C3C5C8, BlendMode.srcIn),
                     width: 22.w,
                     height: 22.h,
                   ),
-                  label: "Services",
+                  label: AppStrings.servicesHeader,
                 ),
               ],
               currentIndex: state.currentPageIndex ?? 0,

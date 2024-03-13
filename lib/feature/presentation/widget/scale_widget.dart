@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_assessment/core/constants/strings/app_assets.dart';
 import 'package:flutter_assessment/core/theme/text_styles.dart';
 import 'package:flutter_assessment/feature/presentation/widget/sub_txt_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,7 +51,7 @@ class ScaleWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                     onTap: onSubtract,
-                    child: SvgPicture.asset('assets/icon/subtract_ic.svg',
+                    child: SvgPicture.asset(AppAssets.subtract_ic,
                         width: 30.w, height: 30.h),
                   )),
                   Expanded(
@@ -61,7 +62,7 @@ class ScaleWidget extends StatelessWidget {
                   Expanded(
                       child: InkWell(
                     onTap: onAdd,
-                    child: SvgPicture.asset('assets/icon/add_ic.svg',
+                    child: SvgPicture.asset(AppAssets.add_ic,
                         width: 30.w, height: 30.h),
                   ))
                 ],

@@ -3,6 +3,7 @@ import 'package:flutter_assessment/feature/data/model/home/services_response_mod
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../core/constants/colors/app_colors.dart';
+import '../../../core/constants/strings/app_assets.dart';
 import '../../../core/theme/text_styles.dart';
 
 class ServiceItemWidget extends StatelessWidget {
@@ -40,7 +41,7 @@ class ServiceItemWidget extends StatelessWidget {
                             image: (service.mainImage == null ||
                                     service.mainImage!.isEmpty)
                                 ? const AssetImage(
-                                        "assets/icon/avatar_placeholder_ic.jpg")
+                                        AppAssets.avatar_placeholder_ic)
                                     as ImageProvider
                                 : NetworkImage(service.mainImage!))),
                   ),
@@ -84,7 +85,7 @@ class ServiceItemWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset('assets/icon/rating_ic.svg',
+                SvgPicture.asset(AppAssets.rating_ic,
                     width: 14.w, height: 14.h),
                 SizedBox(
                   width: 3.w,
@@ -105,7 +106,7 @@ class ServiceItemWidget extends StatelessWidget {
                 SizedBox(
                   width: 3.w,
                 ),
-                SvgPicture.asset('assets/icon/shopping_cart_ic.svg',
+                SvgPicture.asset(AppAssets.shopping_cart_ic,
                     width: 17.w, height: 14.h),
                 SizedBox(
                   width: 3.w,

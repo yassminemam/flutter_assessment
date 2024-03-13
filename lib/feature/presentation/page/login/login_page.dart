@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
+import 'package:flutter_assessment/core/constants/strings/app_assets.dart';
 import 'package:flutter_assessment/core/theme/text_styles.dart';
 import 'package:flutter_assessment/feature/data/model/login/login_request_model.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/login/login_bloc.dart';
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Row(
             children: [
               SvgPicture.asset(
-                'assets/icon/back_ic.svg',
+                AppAssets.back_ic,
                 width: 8.w,
                 height: 15.w,
               ),
@@ -114,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
           height: 30.h,
         ),
         SvgPicture.asset(
-          'assets/bg/login_bg.svg',
+          AppAssets.login_bg,
           width: 225.w,
           height: 225.h,
         ),
@@ -141,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
           maxLines: 1,
           obscureText: true,
           validator: ValidationType.TEXT,
-          suffixIcon: SvgPicture.asset('assets/icon/password_ic.svg',
+          suffixIcon: SvgPicture.asset(AppAssets.password_ic,
               width: 18.w, height: 18.h, fit: BoxFit.scaleDown),
         ),
         Row(
