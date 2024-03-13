@@ -74,16 +74,19 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: true
+
   assets:
     - assets/
     - assets/bg/
     - assets/icon/
     - assets/icon/bar/
+    - assets/fonts/
   fonts:
-    - family: montserrat_regular
+    - family: Montserrat
       fonts:
-        - asset: assets/font/montserrat_regular.ttf
+        - asset: fonts/Montserrat-Regular.ttf
+
+  uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

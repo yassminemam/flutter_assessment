@@ -21,6 +21,7 @@ Future<void> main() async {
     values: FlavorValues(baseUrl: BaseUrlConfig().baseUrlDevelopment),
   );
   await di.init();
+  await ScreenUtil.ensureScreenSize();
   runApp(const MyApp());
 }
 

@@ -3,16 +3,13 @@ import 'package:flutter_assessment/core/theme/text_styles.dart';
 
 class SubTxtWidget extends StatelessWidget {
   String txt;
-  var textAlign;
 
-  SubTxtWidget(this.txt,
-      {this.textAlign});
+  SubTxtWidget(this.txt, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       txt,
-      textAlign: textAlign,
       style: AppTxtStyles.subHeaderTxtStyle
     );
   }

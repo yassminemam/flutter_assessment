@@ -195,18 +195,14 @@ class _LoginPageState extends State<LoginPage> {
         child: RichText(
           text: TextSpan(
             style: AppTxtStyles.subHeaderTxtStyle
-                .copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp),
+                .copyWith(fontWeight: FontWeight.w500, fontSize: 14),
             children: <TextSpan>[
               const TextSpan(
                 text: AppStrings.doNotHaveAccount,
               ),
               TextSpan(
                   text: " ${AppStrings.register}",
-                  style: TextStyle(
-                      fontSize: 14.sp,
-                      color: AppColors.appMainColor,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: "montserrat_regular")),
+                  style: AppTxtStyles.stepTxtStyle.copyWith(fontSize: 14)),
             ],
           ),
         ),
