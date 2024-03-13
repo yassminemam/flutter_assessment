@@ -126,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.w),
       child: Text(
         AppStrings.profileHeader,
-        style: AppTxtStyles.mainFontStyle,
+        style: AppTxtStyles.mainTxtStyle.copyWith(fontSize: 20),
       ),
     );
   }
@@ -137,6 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
         width: 83,
         height: 85,
         child: Stack(
+          fit: StackFit.expand,
           children: [
             Positioned(
                 top: 0,
@@ -362,7 +363,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     children: [
                                       Text(
                                         tag.label ?? "",
-                                        style: AppTxtStyles.subHeaderFontStyle
+                                        style: AppTxtStyles.subHeaderTxtStyle
                                             .copyWith(
                                                 color: AppColors.appMainColor),
                                       ),

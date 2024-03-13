@@ -6,6 +6,7 @@ import 'package:flutter_assessment/feature/presentation/bloc/register/register_b
 import 'package:flutter_assessment/feature/presentation/bloc/register/register_event.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/settings/settings_event.dart';
 import 'package:flutter_assessment/feature/presentation/page/home/profile_page.dart';
+import 'package:flutter_assessment/feature/presentation/page/home/services_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.color_F8FAFC,
         body: BlocListener<RegisterBloc, RegisterState>(
           listener: (BuildContext context, RegisterState state) {
             if (state.status == RegisterStates.loading) {
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
       case 1:
         return const CountriesPage();
       case 2:
-        return ProfilePage();
+        return const ServicesPage();
     }
     return const ProfilePage();
   }

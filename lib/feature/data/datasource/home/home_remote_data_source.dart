@@ -1,12 +1,16 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_assessment/core/constants/strings/app_strings.dart';
 import 'package:flutter_assessment/feature/data/model/home/countries_response_model.dart';
 
 import '../../../../config/end_poits.dart';
 import '../../../../core/error/app_server_error.dart';
 import '../../../../core/error/exception.dart';
+import '../../model/home/services_response_model.dart';
 
 abstract class HomeRemoteDataSource {
-  Future<dynamic> getCountries({int? pageIndex});
+  Future<CountriesResponseModel?> getCountries({int? pageIndex});
+
+  Future<ServicesResponseModel?> getServices({required bool isPopular});
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -31,7 +35,25 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     } on DioException catch (ex) {
       AppServerError? error =
           AppServerError.fromJson(ex.response?.data ?? ex.message);
-      throw AppException(error?.toString() ?? "Unknown Server Error");
+      throw AppException(error?.toString() ?? AppStrings.unknownServerError);
+    }
+    return null;
+  }
+
+  @override
+  Future<ServicesResponseModel?> getServices({required bool isPopular}) async {
+    try {
+      var response = await dio.get(
+          isPopular ? EndPoints.getPopularServices : EndPoints.getServices);
+      if (response.statusCode == 200) {
+        ServicesResponseModel servicesResponseModel =
+            ServicesResponseModel.fromJson(response.data);
+        return servicesResponseModel;
+      }
+    } on DioException catch (ex) {
+      AppServerError? error =
+          AppServerError.fromJson(ex.response?.data ?? ex.message);
+      throw AppException(error?.toString() ?? AppStrings.unknownServerError);
     }
     return null;
   }

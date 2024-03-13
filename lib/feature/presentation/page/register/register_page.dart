@@ -101,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 Text(
                   AppStrings.register,
-                  style: AppTxtStyles.mainFontStyle,
+                  style: AppTxtStyles.mainTxtStyle,
                 )
               ],
             ),
@@ -133,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Expanded(
               child: Text(
             error,
-            style: AppTxtStyles.subHeaderFontStyle
+            style: AppTxtStyles.subHeaderTxtStyle
                 .copyWith(color: AppColors.color_F56342),
           ))
         ],

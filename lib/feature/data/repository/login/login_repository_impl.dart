@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_assessment/core/error/failure.dart';
 import 'package:flutter_assessment/feature/data/model/login/login_request_model.dart';
+import '../../../../core/constants/strings/app_strings.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../domain/repository/login/login_repository.dart';
@@ -23,7 +24,9 @@ class LoginRepositoryImpl implements LoginRepository {
     if (isConnected) {
       try {
         var response = await loginRemoteDataSource.sendLoginRequest(body: body);
-        return Right(response);
+        return response == null
+            ? Left(ServerFailure(AppStrings.dataFromServerIsNullError))
+            : Right(response);
       } on AppException catch (exp) {
         return Left(ServerFailure(exp.errorMessage));
       }

@@ -23,6 +23,7 @@ import 'feature/domain/repository/login/login_repository.dart';
 import 'feature/domain/repository/register/register_repository.dart';
 import 'feature/domain/repository/settings/settings_repository.dart';
 import 'feature/domain/usecase/get_dependencies/get_dependencies.dart';
+import 'feature/domain/usecase/get_services/get_services.dart';
 import 'feature/domain/usecase/send_register/send_register.dart';
 import 'feature/presentation/bloc/home/home_bloc.dart';
 import 'feature/presentation/bloc/login/login_bloc.dart';
@@ -86,6 +87,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => UpdateSettings(settingsRepo: sl()));
   sl.registerLazySingleton(() => GetSettings(settingsRepo: sl()));
   sl.registerLazySingleton(() => GetCountries(homeRepository: sl()));
+  sl.registerLazySingleton(() => GetServices(homeRepository: sl()));
   // Bloc
   sl.registerFactory(
     () => RegisterBloc(
@@ -102,5 +104,5 @@ Future<void> init() async {
       getSettings: sl(),
     ),
   );
-  sl.registerFactory(() => HomeBloc(getCountries: sl()));
+  sl.registerFactory(() => HomeBloc(getCountries: sl(), getServices: sl(),));
 }

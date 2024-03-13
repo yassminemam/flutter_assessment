@@ -13,7 +13,7 @@ class SubTxtWidget extends StatelessWidget {
     return Text(
       txt,
       textAlign: textAlign,
-      style: AppTxtStyles.subHeaderFontStyle
+      style: AppTxtStyles.subHeaderTxtStyle
     );
   }
 }

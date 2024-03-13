@@ -93,7 +93,7 @@ class InputWidget extends StatelessWidget {
                   onTap: onTap,
                   readOnly: isReadOnly ?? false,
                   cursorColor: AppColors.appMainColor,
-                  style: AppTxtStyles.inputTxtFontStyle,
+                  style: AppTxtStyles.inputTxtStyle,
                   decoration: InputDecoration(
                     fillColor: Colors.transparent,
                     border: InputBorder.none,

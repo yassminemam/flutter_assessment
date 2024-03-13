@@ -5,7 +5,7 @@ import '../../../../core/usecase/usecase.dart';
 import '../../../data/model/home/countries_response_model.dart';
 import '../../repository/home/home_repository.dart';
 
-class GetCountries implements UseCase<CountriesResponseModel, ParamsGetCountries> {
+class GetCountries implements UseCase<CountriesResponseModel?, ParamsGetCountries> {
   final HomeRepository homeRepository;
 
   GetCountries({required this.homeRepository});

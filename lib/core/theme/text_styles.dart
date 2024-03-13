@@ -3,20 +3,20 @@ import 'package:flutter_assessment/core/constants/colors/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTxtStyles{
-  static final mainFontStyle = TextStyle(
+  static final mainTxtStyle = TextStyle(
       fontSize: 18.sp,
       color: Colors.black,
       fontWeight: FontWeight.w600,
       fontFamily: "montserrat_regular"
   );
-  static final subHeaderFontStyle = TextStyle(
+  static final subHeaderTxtStyle = TextStyle(
       fontSize: 12.sp,
       color: AppColors.color_696F79,
       fontWeight: FontWeight.w500,
       fontFamily: "montserrat_regular"
   );
 
-  static final inputTxtFontStyle = TextStyle(
+  static final inputTxtStyle = TextStyle(
       fontSize: 16.sp,
       color: AppColors.color_333333,
       fontWeight: FontWeight.w500,
@@ -32,6 +32,18 @@ class AppTxtStyles{
       fontSize: 12.sp,
       color: AppColors.appMainColor,
       fontWeight: FontWeight.w600,
+      fontFamily: "montserrat_regular"
+  );
+
+  static final size11Weight500ColorBlackTxtStyle = TextStyle(
+      fontSize: 11.sp,
+      color: Colors.black,
+      fontWeight: FontWeight.w500,
+      fontFamily: "montserrat_regular"
+  );
+  static final size10Weight400TxtStyle = TextStyle(
+      fontSize: 10.sp,
+      fontWeight: FontWeight.w400,
       fontFamily: "montserrat_regular"
   );
 }

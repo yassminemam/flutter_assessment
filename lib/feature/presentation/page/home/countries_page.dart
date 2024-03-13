@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_assessment/feature/data/model/home/countries_response_model.dart';
 import 'package:flutter_assessment/feature/presentation/bloc/home/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +8,7 @@ import 'package:number_paginator/number_paginator.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/strings/app_strings.dart';
 import '../../../../core/theme/text_styles.dart';
+import '../../../../core/util/tools.dart';
 import '../../bloc/home/home_event.dart';
 import '../../bloc/home/home_state.dart';
 
@@ -36,19 +35,32 @@ class _CountriesPageState extends State<CountriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state.status != HomeStates.loading &&
-            state.status != HomeStates.failure &&
-            state.countries != null) {
-          return SafeArea(child: _getScreenBody());
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (BuildContext context, HomeState state) {
+        if (state.status == HomeStates.success && state.currentPageIndex == 1) {
+          Tools.showHintMsg(AppStrings.countriesPageHint);
         }
-        return const Center(
-          child: CircularProgressIndicator(
-            color: AppColors.appMainColor,
-          ),
-        );
+        else if (state.status == HomeStates.failure) {
+          Tools.showErrorMessage(state.error?.errorMessage);
+        }
       },
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state.status != HomeStates.loading && state.countries != null) {
+            return _getScreenBody();
+          }
+          else if (state.status == HomeStates.failure) {
+            return const Center(
+              child: Text(AppStrings.error),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(
+              color: AppColors.appMainColor,
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -81,7 +93,7 @@ class _CountriesPageState extends State<CountriesPage> {
   Widget _getHeader() {
     return Text(
       AppStrings.countriesHeader,
-      style: AppTxtStyles.mainFontStyle,
+      style: AppTxtStyles.mainTxtStyle.copyWith(fontSize: 20),
     );
   }
 
@@ -315,7 +327,7 @@ class _CountriesPageState extends State<CountriesPage> {
                                 child: Text(
                                   countriesOfCurrentPage[index].name ?? "",
                                   textAlign: TextAlign.center,
-                                  style: AppTxtStyles.subHeaderFontStyle
+                                  style: AppTxtStyles.subHeaderTxtStyle
                                       .copyWith(color: Colors.black),
                                 ),
                               )),
@@ -324,7 +336,7 @@ class _CountriesPageState extends State<CountriesPage> {
                                 child: Text(
                                   countriesOfCurrentPage[index].capital ?? "",
                                   textAlign: TextAlign.center,
-                                  style: AppTxtStyles.subHeaderFontStyle
+                                  style: AppTxtStyles.subHeaderTxtStyle
                                       .copyWith(color: Colors.black),
                                 ),
                               ))

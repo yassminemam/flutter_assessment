@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Text(
                 AppStrings.accountLogin,
-                style: AppTxtStyles.mainFontStyle,
+                style: AppTxtStyles.mainTxtStyle,
               )
             ],
           ),
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Center(
         child: RichText(
           text: TextSpan(
-            style: AppTxtStyles.subHeaderFontStyle
+            style: AppTxtStyles.subHeaderTxtStyle
                 .copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp),
             children: <TextSpan>[
               const TextSpan(

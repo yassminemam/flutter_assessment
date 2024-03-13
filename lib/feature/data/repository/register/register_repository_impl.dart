@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_assessment/core/error/failure.dart';
 import 'package:flutter_assessment/feature/data/model/dependencies/dependencies_response_model.dart';
+import '../../../../core/constants/strings/app_strings.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/network/network_info.dart';
 import '../../../domain/repository/register/register_repository.dart';
@@ -22,7 +23,9 @@ class RegisterRepositoryImpl implements RegisterRepository {
     if (isConnected) {
       try {
         var response = await registerRemoteDataSource.getDependencies();
-        return Right(response);
+        return response == null
+            ? Left(ServerFailure(AppStrings.dataFromServerIsNullError))
+            :  Right(response);
       } on AppException catch (exp) {
         return Left(ServerFailure(exp.errorMessage));
       }

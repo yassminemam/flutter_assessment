@@ -56,7 +56,7 @@ class ScaleWidget extends StatelessWidget {
                   Expanded(
                       child: Text(
                     "SAR $value",
-                    style: AppTxtStyles.inputTxtFontStyle,
+                    style: AppTxtStyles.inputTxtStyle,
                   )),
                   Expanded(
                       child: InkWell(

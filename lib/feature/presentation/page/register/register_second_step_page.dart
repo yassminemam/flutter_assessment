@@ -97,6 +97,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
           width: 83,
           height: 85,
           child: Stack(
+            fit: StackFit.expand,
             children: [
               Positioned(
                   top: 0,
@@ -318,7 +319,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
                                   child: Text(
                                     option.label ?? "",
                                     textAlign: TextAlign.left,
-                                    style: AppTxtStyles.subHeaderFontStyle
+                                    style: AppTxtStyles.subHeaderTxtStyle
                                         .copyWith(
                                       color: AppColors.appMainColor,
                                     ),
@@ -406,7 +407,7 @@ class _RegisterSecondStepPageState extends State<RegisterSecondStepPage> {
                                             Text(
                                               tag,
                                               style: AppTxtStyles
-                                                  .subHeaderFontStyle
+                                                  .subHeaderTxtStyle
                                                   .copyWith(
                                                       color: AppColors
                                                           .appMainColor),

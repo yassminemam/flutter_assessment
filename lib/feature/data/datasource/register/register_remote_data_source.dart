@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as dioLib;
 import 'package:flutter_assessment/core/error/app_server_error.dart';
 import '../../../../config/end_poits.dart';
+import '../../../../core/constants/strings/app_strings.dart';
 import '../../../../core/error/exception.dart';
 import '../../model/dependencies/dependencies_response_model.dart';
 import '../../model/register/register_request_model.dart';
@@ -33,7 +34,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
     } on DioException catch (ex) {
       AppServerError? error =
           AppServerError.fromJson(ex.response?.data ?? ex.message);
-      throw AppException(error?.toString() ?? "Unknown Server Error");
+      throw AppException(error?.toString() ?? AppStrings.unknownServerError);
     }
     return null;
   }
@@ -52,7 +53,7 @@ class RegisterRemoteDataSourceImpl implements RegisterRemoteDataSource {
     } on DioException catch (ex) {
       AppServerError? error =
       AppServerError.fromJson(ex.response?.data ?? ex.message);
-      throw AppException(error?.toString() ?? "Unknown Server Error");
+      throw AppException(error?.toString() ?? AppStrings.unknownServerError);
     }
   }
 }
